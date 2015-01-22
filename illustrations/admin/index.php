@@ -12,7 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
 /**
  * ▼ DB処理
- * ▼ user_idをキーにセレクトする
+ * ▼ user_idをキーにセレクトする 降順
  */
 $dbh = db_connect($dsn, $db_user, $db_password);
 $sql = 'SELECT * FROM illustrations WHERE user_id = :user_id ORDER BY id DESC';
@@ -50,7 +50,7 @@ $count = count($rec); // 取得件数
 			</div>
 			<ul class="nav navbar-nav pull-right">
 				<li>
-					<a href="upload_new_illustration.php">upload</a>
+					<a href="./upload_new_illustration.php">upload</a>
 				</li>
 			</ul>
 		</div>
@@ -82,7 +82,7 @@ $count = count($rec); // 取得件数
 							<td><?php echo h($rec[$i]['created_at']); ?></td>
 							<td><?php echo h($rec[$i]['user_id']); ?></td>
 							<td><a href="./update_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">編集</a></td>
-							<td><a href="">削除</a></td>
+							<td><a href="./delete/delete_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">削除</a></td>
 						</tr>
 						<?php endfor; ?>
 					</tbody>

@@ -8,13 +8,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
+// 変数初期化
 $input_title = (isset($_SESSION['upload_new_illust_data']['input_title'])) ? $_SESSION['upload_new_illust_data']['input_title'] : '';
 $input_price = (isset($_SESSION['upload_new_illust_data']['input_price'])) ? $_SESSION['upload_new_illust_data']['input_price'] : '';
 $err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['upload_new_illust_data']['err_msg'] : array();
 
-
-// jQueryで文字数カウントをつけたい
-// 同じく必須が空白ならメッセージ出したい
+// tokenをセット
+$token = set_token();
 
 ?>
 
@@ -44,7 +44,7 @@ $err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['
 			</div>
 			<ul class="nav navbar-nav pull-right">
 				<li>
-					<a href="upload_new_illustration.php">upload</a>
+					<a href=",/upload_new_illustration.php">upload</a>
 				</li>
 			</ul>
 		</div>
@@ -62,22 +62,24 @@ $err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['
 							<legend>新規登録</legend>
 							<div class="form-group">
 								<label for="title">タイトル</label><span class="required">※必須</span>
-								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control" placeholder="title">
-								<p class="help-block">※30文字まで</p>
+								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control required-check" placeholder="title">
+								<span class="required-msg"></span>
+								<span id="title_conut" class="pull-right"></span>
 							</div>
 							<div class="form-group">
 								<label for="price">販売価格</label><span class="required">※必須</span>
 								<div class="input-group">
-									<input id="price" type="text" name="price" value="<?php echo h($input_price); ?>" class="form-control" placeholder="price">
+									<input id="price" type="text" name="price" value="<?php echo h($input_price); ?>" class="form-control required-check" placeholder="price">
 									<span class="input-group-addon">円</span>
 								</div>
+								<span class="required-msg"></span>
 							</div>
 							<ul>
 								<?php foreach ($err_msg as $msg): ?>
 									<li><?php echo h($msg); ?></li>
 								<?php endforeach; ?>
 							</ul>
-							<input type="hidden" value="<?php echo set_token(); ?>" name="token">
+							<input type="hidden" value="<?php echo h($token); ?>" name="token">
 							<button type="submit" class="btn btn-primary btn-block">登録</button>
 						</fieldset>
 					</form>
@@ -104,6 +106,7 @@ $err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['
 							<div class="input-file-padding">
 								<input type="file" name="new_illust" value="">
 							</div>
+							<input type="hidden" value="<?php echo h($token); ?>" name="token">
 							<button type="submit" class="btn btn-primary btn-block">upload</button>
 						</fieldset>
 					</form>

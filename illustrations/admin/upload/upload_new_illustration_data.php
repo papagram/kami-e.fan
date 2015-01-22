@@ -21,7 +21,7 @@ try {
 		/**
 		 * ▼ Tokenをチェック
 		 */
-		 check_token($posts['token']);
+		check_token($posts['token']);
 
 		$_SESSION['upload_new_illust_data']['flg'] = true;
 		$_SESSION['upload_new_illust_data']['err_msg'] = array();
@@ -121,4 +121,3 @@ try {
 	header('Location: ../upload_new_illustration.php');
 	exit;
 }
-

@@ -21,7 +21,7 @@ try {
 		/**
 		 * ▼ Tokenをチェック
 		 */
-		 check_token($posts['token']);
+		check_token($posts['token']);
 
 		$_SESSION['update_illust']['flg'] = true;
 		$_SESSION['update_illust']['err_msg'] = array();

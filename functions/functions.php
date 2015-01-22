@@ -44,7 +44,7 @@
 		$token = sha1(uniqid(mt_rand(),true));
 		$_SESSION['tokens'][] = $token;
 		
-		return h($token);
+		return $token;
  	}
 
  	function check_token($token) {
