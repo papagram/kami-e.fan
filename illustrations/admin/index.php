@@ -4,10 +4,23 @@
  * ▼ $_SERVER['DOCUMENT_ROOT'] === 'C:/xampp/htdocs/kami-e.fan';
  * ▼ 外部ファイルをインクルード
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
-$date = new DateTime();
+
+/**
+ * ▼ DB処理
+ * ▼ user_idをキーにセレクトする
+ */
+$dbh = db_connect($dsn, $db_user, $db_password);
+$sql = 'SELECT * FROM illustrations WHERE user_id = :user_id ORDER BY id DESC';
+$stmt = $dbh->prepare($sql);
+$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+$rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$count = count($rec); // 取得件数
 
 ?>
 
@@ -49,7 +62,31 @@ $date = new DateTime();
 				<span>メニュー</span>
 			</div>
 			<div class="col col-md-10">
-				<span>一覧</span>
+				<table class="table table-striped">
+					<thead>
+						<th>ID</th>
+						<th>タイトル</th>
+						<th>価格</th>
+						<th>登録日時</th>
+						<th>ユーザー</th>
+						<th>編集</th>
+						<th>削除</th>
+					</thead>
+					<tbody>
+						<caption>一覧</caption>
+						<?php for ($i=0; $i<$count; $i++): ?>
+						<tr>
+							<td><?php echo h($rec[$i]['id']); ?></td>
+							<td><?php echo h($rec[$i]['title']); ?></td>
+							<td><?php echo h($rec[$i]['price']); ?></td>
+							<td><?php echo h($rec[$i]['created_at']); ?></td>
+							<td><?php echo h($rec[$i]['user_id']); ?></td>
+							<td><a href="./update_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">編集</a></td>
+							<td><a href="">削除</a></td>
+						</tr>
+						<?php endfor; ?>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

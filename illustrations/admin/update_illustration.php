@@ -5,26 +5,40 @@
  * ▼ 外部ファイルをインクルード
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
-$input_title = (isset($_SESSION['upload_new_illust_data']['input_title'])) ? $_SESSION['upload_new_illust_data']['input_title'] : '';
-$input_price = (isset($_SESSION['upload_new_illust_data']['input_price'])) ? $_SESSION['upload_new_illust_data']['input_price'] : '';
-$err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['upload_new_illust_data']['err_msg'] : array();
 
+// イラストIDをURLパラメータから取得
+if (! ctype_digit($_GET['id'])) {
+	header('Location: ./index.php');
+}
+$id= h($_GET['id']);
 
-// jQueryで文字数カウントをつけたい
-// 同じく必須が空白ならメッセージ出したい
+/**
+ * ▼ DB処理
+ * ▼ idをキーにセレクトする
+ */
+$dbh = db_connect($dsn, $db_user, $db_password);
+$sql = 'SELECT * FROM illustrations WHERE id = :id';
+$stmt = $dbh->prepare($sql);
+$stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+$stmt->execute();
+$rec = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$input_title = (isset($_SESSION['update_illust']['input_title'])) ? $_SESSION['update_illust']['input_title'] : $rec['title'];
+$input_price = (isset($_SESSION['update_illust']['input_price'])) ? $_SESSION['update_illust']['input_price'] : $rec['price'];
+$err_msg = (isset($_SESSION['update_illust']['err_msg'])) ? $_SESSION['update_illust']['err_msg'] : array();
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 	<meta charset="utf-8">
 	<title>
-		<?php echo 'アップロード'; ?>
+		<?php echo '編集'; ?>
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="http://kami-e.fan/asset/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -57,18 +71,18 @@ $err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['
 			</div>
 			<div class="col col-md-10">
 				<div>
-					<form action="./upload/upload_new_illustration_data.php" method="post" class="form-horizontal">
+					<form action="./update/update_illustration.php" method="post" class="form-horizontal">
 						<fieldset>
-							<legend>新規登録</legend>
+							<legend>編集</legend>
 							<div class="form-group">
-								<label for="title">タイトル</label><span class="required">※必須</span>
-								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control" placeholder="title">
+								<label for="title">タイトル</label>
+								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control">
 								<p class="help-block">※30文字まで</p>
 							</div>
 							<div class="form-group">
-								<label for="price">販売価格</label><span class="required">※必須</span>
+								<label for="price">販売価格</label>
 								<div class="input-group">
-									<input id="price" type="text" name="price" value="<?php echo h($input_price); ?>" class="form-control" placeholder="price">
+									<input id="price" type="text" name="price" value="<?php echo h($input_price); ?>" class="form-control">
 									<span class="input-group-addon">円</span>
 								</div>
 							</div>
@@ -78,40 +92,15 @@ $err_msg = (isset($_SESSION['upload_new_illust_data']['err_msg'])) ? $_SESSION['
 								<?php endforeach; ?>
 							</ul>
 							<input type="hidden" value="<?php echo set_token(); ?>" name="token">
-							<button type="submit" class="btn btn-primary btn-block">登録</button>
+							<input type="hidden" value="<?php echo h($id); ?>" name="id">
+							<button type="submit" class="btn btn-primary btn-block">更新</button>
 						</fieldset>
 					</form>
-				</div>
-				<hr>
-				<div>
-					<button id="modal-start" class="btn btn-primary">upload</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<!-- ▼ モーダル -->
-	<div class="modal" id="modal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Upload Your Illustration!!</h4>
-				</div>
-				<div class="modal-body">
-					<form action="./upload/upload_new_illustration_image.php" method="post" enctype="multipart/form-data" class="form-horizontal" id="upload">
-						<fieldset>
-							<div class="input-file-padding">
-								<input type="file" name="new_illust" value="">
-							</div>
-							<button type="submit" class="btn btn-primary btn-block">upload</button>
-						</fieldset>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-<!-- ▲ モーダルここまで -->
 
 	<div class="container">
 		<div class="row">

@@ -23,10 +23,10 @@ try {
 		 */
 		 check_token($posts['token']);
 
-		$_SESSION['upload_new_illust_data']['flg'] = true;
-		$_SESSION['upload_new_illust_data']['err_msg'] = array();
-	 	$_SESSION['upload_new_illust_data']['input_title'] = '';
-	 	$_SESSION['upload_new_illust_data']['input_price'] = '';
+		$_SESSION['update_illust']['flg'] = true;
+		$_SESSION['update_illust']['err_msg'] = array();
+	 	$_SESSION['update_illust']['input_title'] = '';
+	 	$_SESSION['update_illust']['input_price'] = '';
 
 		/**
 		 * ▼ タイトルは必須　30文字まで
@@ -35,12 +35,12 @@ try {
 		 $max_len = 30; // 最大文字数
 		 $len = mb_strlen($posts['title']); // 文字数取得
 		 if ($len > $max_len) {
-			$_SESSION['upload_new_illust_data']['flg'] = false;
-			$_SESSION['upload_new_illust_data']['err_msg'][] = 'タイトルは30文字までです。';
+			$_SESSION['update_illust']['flg'] = false;
+			$_SESSION['update_illust']['err_msg'][] = 'タイトルは30文字までです。';
 		 }
 		 if (! $len) {
-			$_SESSION['upload_new_illust_data']['flg'] = false;
-			$_SESSION['upload_new_illust_data']['err_msg'][] = 'タイトルが入力されていません。';
+			$_SESSION['update_illust']['flg'] = false;
+			$_SESSION['update_illust']['err_msg'][] = 'タイトルが入力されていません。';
 		 }
 		 
 		/**
@@ -50,23 +50,23 @@ try {
 		 $max_digit = 7; // 最大桁数 1000000
 		 $digit = mb_strlen($posts['price']); // 桁数取得
 		 if ($digit > $max_digit) {
-			$_SESSION['upload_new_illust_data']['flg'] = false;
-			$_SESSION['upload_new_illust_data']['err_msg'][] = '価格が大きすぎます。';
+			$_SESSION['update_illust']['flg'] = false;
+			$_SESSION['update_illust']['err_msg'][] = '価格が大きすぎます。';
 		 }
 		 if (! $digit) {
-			$_SESSION['upload_new_illust_data']['flg'] = false;
-			$_SESSION['upload_new_illust_data']['err_msg'][] = '価格が入力されていません。';
+			$_SESSION['update_illust']['flg'] = false;
+			$_SESSION['update_illust']['err_msg'][] = '価格が入力されていません。';
 		 }
 		 if (! ctype_digit($posts['price'])) {
-			$_SESSION['upload_new_illust_data']['flg'] = false;
-			$_SESSION['upload_new_illust_data']['err_msg'][] = '価格は数字のみ入力して下さい。';
+			$_SESSION['update_illust']['flg'] = false;
+			$_SESSION['update_illust']['err_msg'][] = '価格は数字のみ入力して下さい。';
 		 }
-		 
+
 		/**
 		 * ▼ バリデート結果
 		 */
-		 if (! $_SESSION['upload_new_illust_data']['flg']) {
-			throw new ValidateErrorException('');
+		 if (! $_SESSION['update_illust']['flg']) {
+		 	throw new ValidateErrorException('');
 		 }
 		 
 		/**
@@ -76,20 +76,14 @@ try {
 		 
 		 try {
 		 	$dbh->beginTransaction();
-		 	
-			$sql = 'INSERT INTO illustrations 
-						(title,
-							price,
-							created_at,
-							user_id) 
-					VALUES(:title,
-							:price,
-							now(),
-							:user_id)';
+
+			$sql = 'UPDATE illustrations 
+						SET title = :title, price = :price 
+					WHERE id = :id';
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindValue(':title', $posts['title'], PDO::PARAM_STR);
 			$stmt->bindValue(':price', (int)$posts['price'], PDO::PARAM_INT);
-			$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+			$stmt->bindValue(':id', (int)$posts['id'], PDO::PARAM_INT);
 			$stmt->execute();
 			$count = $stmt->rowCount();
 			if (! $count) {
@@ -103,7 +97,7 @@ try {
 		 	exit;
 		 }
 		 
-		unset($_SESSION['upload_new_illust_data']);
+		unset($_SESSION['update_illust']);
 		header('Location: ../index.php');
 		exit;
 	} else {
@@ -116,9 +110,8 @@ try {
 	header ('Location: ../index.php');
 	exit;
 } catch (ValidateErrorException $e) {
- 	$_SESSION['upload_new_illust_data']['input_title'] = $_POST['title'];
- 	$_SESSION['upload_new_illust_data']['input_price'] = $_POST['price'];
-	header('Location: ../upload_new_illustration.php');
+ 	$_SESSION['update_illust']['input_title'] = $_POST['title'];
+ 	$_SESSION['update_illust']['input_price'] = $_POST['price'];
+	header('Location: ../update_illustration.php?id=' . (int)$posts['id']);
 	exit;
 }
-
