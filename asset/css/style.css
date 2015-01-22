@@ -3,3 +3,9 @@
 .input-file-padding {
 	padding-bottom: 15px;
 }
+
+.required {
+	color: #FF0000;
+	font-size: 80%;
+	padding-left: 10px;
+}

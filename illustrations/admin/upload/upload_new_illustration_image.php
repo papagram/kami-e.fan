@@ -5,12 +5,10 @@
  * ▼ 外部ファイルをインクルード
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
-// ▼ Exceptionクラスを拡張
-class NotPostException extends Exception {};
-class CsrfErrorException extends Exception {};
 
 try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
