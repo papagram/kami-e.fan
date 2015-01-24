@@ -12,7 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
 // イラストIDをURLパラメータから取得
 if (! ctype_digit($_GET['id'])) {
-	header('Location: ./index.php');
+	header('Location: ../index.php');
 	exit;
 }
 $id= h($_GET['id']);
