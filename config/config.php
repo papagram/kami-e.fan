@@ -16,3 +16,4 @@
 	class NotPostException extends Exception {};
 	class CsrfErrorException extends Exception {};
 	class ValidateErrorException extends Exception {};
+	class UploadImageErrorException extends Exception {};

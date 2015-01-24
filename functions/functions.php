@@ -24,7 +24,7 @@
 /**
  * ▼ DBに接続
  */
- 	function db_connect($dsn, $db_user, $db_password) {
+	function db_connect($dsn, $db_user, $db_password) {
 		try{
 			$dbh = new PDO($dsn, $db_user, $db_password);
 			$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -35,19 +35,19 @@
 			echo 'ただいま障害により大変ご迷惑をお掛け致しております。';
 			exit;
 		}
- 	}
+	}
  
- /**
+/**
  * ▼ CSRF対策
  */
- 	function set_token() {
+	function set_token() {
 		$token = sha1(uniqid(mt_rand(),true));
 		$_SESSION['tokens'][] = $token;
 		
 		return $token;
- 	}
+	}
 
- 	function check_token($token) {
+	function check_token($token) {
 		$key = array_search($token, $_SESSION['tokens'], true);
 		if (! $key)
 		{
@@ -57,4 +57,25 @@
 		{
 			array_splice($_SESSION['tokens'], $key, 1);
 		}
- 	}
+	}
+
+/**
+ * ▼ サムネイル用のサイズを取得
+ */
+	function get_new_thumb_size($w, $h, $max_w, $max_h) {
+		// ▼ 原寸幅が最大幅より大きい　かつ　原寸高さよりも原寸幅が大きい
+		if ($w > $max_w && $w > $h)
+		{
+			$new_w = $max_w;
+			$new_h = round($h * $max_w / $w);
+		}
+		
+		// ▼ 原寸高さが最大高さより大きい　かつ　原寸幅よりも原寸高さが大きい
+		if ($h > $max_h && $h >= $w)
+		{
+			$new_h = $max_h;
+			$new_w = round($w * $max_h / $h);
+		}
+		
+		return array($new_w, $new_h);
+	}

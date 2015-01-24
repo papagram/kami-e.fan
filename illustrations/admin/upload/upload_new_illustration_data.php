@@ -107,7 +107,7 @@ try {
 		header('Location: ../index.php');
 		exit;
 	} else {
-	 throw new NotPostException();
+		throw new NotPostException();
 	}
 } catch (NotPostException $e) {
 	header ('Location: ../index.php');
