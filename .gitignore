@@ -1,0 +1,4 @@
+/_base/*
+/test/*
+/images/*
+/config/db_config.php
