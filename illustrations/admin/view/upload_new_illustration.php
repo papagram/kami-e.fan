@@ -23,7 +23,7 @@
 			</div>
 			<ul class="nav navbar-nav pull-right">
 				<li>
-					<a href=",/upload_new_illustration.php">upload</a>
+					<a href="./upload_new_illustration.php">upload</a>
 				</li>
 			</ul>
 		</div>
