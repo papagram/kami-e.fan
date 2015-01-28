@@ -44,3 +44,17 @@ $(function(){
 		}
 	});
 });
+
+// ファイルアップロードチェック
+$(function(){
+	$('#file-upload').click(function(){
+		$('.required-msg').text('');
+		if ($('.required-file').val() == '') {
+			$('.required-msg').css({
+				"color" : "#ff6347",
+				"fontweight" : "bold"
+			}).text('ファイルを選択して下さい。');
+			return false;
+		}
+	});
+});

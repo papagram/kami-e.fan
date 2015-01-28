@@ -1,4 +1,5 @@
 /_base/*
 /test/*
 /images/*
+/zzz_not/*
 /config/db_config.php

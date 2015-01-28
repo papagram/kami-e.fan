@@ -33,13 +33,13 @@ try {
 	$stmt->execute();
 	$count = $stmt->rowCount();
 	if (! $count) {
-		throw new Exception('');
+		throw new SqlErrorException('');
 	}
 		
 	$dbh->commit();
-} catch (Exception $e) {
+} catch (SqlErrorException $e) {
 	$dbh->rollBack();
-	echo '失敗';
+	header('Location: ../index.php');
 	exit;
 }
 

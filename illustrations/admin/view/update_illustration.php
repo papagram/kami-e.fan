@@ -16,19 +16,18 @@
 					<form action="./update/update_illustration.php" method="post" class="form-horizontal">
 						<fieldset>
 							<legend>編集</legend>
+							<img src="<?php echo h($src); ?>">
 							<div class="form-group">
 								<label for="title">タイトル</label>
-								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control required-check">
-								<span class="required-msg"></span>
+								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control">
 								<span id="title_conut" class="pull-right"></span>
 							</div>
 							<div class="form-group">
 								<label for="price">販売価格</label>
 								<div class="input-group">
-									<input id="price" type="text" name="price" value="<?php echo h($input_price); ?>" class="form-control required-check">
+									<input id="price" type="text" name="price" value="<?php echo h($input_price); ?>" class="form-control">
 									<span class="input-group-addon">円</span>
 								</div>
-								<span class="required-msg"></span>
 							</div>
 							<ul>
 								<?php foreach ($err_msg as $msg): ?>

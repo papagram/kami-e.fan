@@ -29,7 +29,7 @@ try {
 	 	$_SESSION['update_illust']['input_price'] = '';
 
 		/**
-		 * ▼ タイトルは必須　30文字まで
+		 * ▼ タイトルは30文字まで
 		 */
 		 $posts['title'] = mb_ereg_replace('\A(\s)+|(\s)+\z', '', $posts['title']); // 前後のスペースは削除
 		 $max_len = 30; // 最大文字数
@@ -38,13 +38,9 @@ try {
 			$_SESSION['update_illust']['flg'] = false;
 			$_SESSION['update_illust']['err_msg'][] = 'タイトルは30文字までです。';
 		 }
-		 if (! $len) {
-			$_SESSION['update_illust']['flg'] = false;
-			$_SESSION['update_illust']['err_msg'][] = 'タイトルが入力されていません。';
-		 }
 		 
 		/**
-		 * ▼ 価格は必須 数字のみ 7桁まで
+		 * ▼ 価格は数字のみ 7桁まで
 		 */
 		 $posts['price'] = mb_ereg_replace('\A(\s)+|(\s)+\z', '', $posts['price']); // 前後のスペースは削除
 		 $max_digit = 7; // 最大桁数 1000000
@@ -52,10 +48,6 @@ try {
 		 if ($digit > $max_digit) {
 			$_SESSION['update_illust']['flg'] = false;
 			$_SESSION['update_illust']['err_msg'][] = '価格が大きすぎます。';
-		 }
-		 if (! $digit) {
-			$_SESSION['update_illust']['flg'] = false;
-			$_SESSION['update_illust']['err_msg'][] = '価格が入力されていません。';
 		 }
 		 if (! ctype_digit($posts['price'])) {
 			$_SESSION['update_illust']['flg'] = false;
@@ -87,13 +79,17 @@ try {
 			$stmt->execute();
 			$count = $stmt->rowCount();
 			if (! $count) {
-				throw new Exception('');
+				throw new SqlErrorException('');
 			}
 		 	
 		 	$dbh->commit();
-		 } catch (Exception $e) {
+		 } catch (SqlErrorException $e) {
 		 	$dbh->rollBack();
-		 	echo '失敗';
+			$_SESSION['update_illust']['flg'] = false;
+			$_SESSION['update_illust']['err_msg'][] = 'DB ERROR:もう一度やり直して下さい。';
+			$_SESSION['update_illust']['input_title'] = $_POST['title'];
+			$_SESSION['update_illust']['input_price'] = $_POST['price'];
+			header('Location: ../update_illustration.php?id=' . (int)$posts['id']);
 		 	exit;
 		 }
 		 

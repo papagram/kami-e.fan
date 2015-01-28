@@ -13,6 +13,28 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		/**
+		 * ▼ 初期化
+		 */
+		$_SESSION['upload_new_illust']['flg'] = true;
+		$_SESSION['upload_new_illust']['err_msg'] = array();
+		$tmp_name = $_FILES['new_illust']['tmp_name'];
+		$error = $_FILES['new_illust']['error'];
+
+		/**
+		 * ▼ php.iniのpost_max_sizeディレクティブを超えているか 8MB
+		 * ▼ php.iniのupload_max_filesizeディレクティブを超えているか 4MB
+		 * ▼ MAX_FILE_SIZEを超えているか 2MB
+		 */
+		$post_max_size = 1024 * 1024 * 8;
+		if ($_SERVER['CONTENT_LENGTH'] > $post_max_size ||
+			$error === UPLOAD_ERR_INI_SIZE || 
+			$error === UPLOAD_ERR_FORM_SIZE) {
+			$_SESSION['upload_new_illust']['flg'] = false;
+			$_SESSION['upload_new_illust']['err_msg'][] = 'ファイルサイズは2MBまでです。';
+			throw new ValidateErrorException('');
+		}
+
+		/**
 		 * ▼ $_POSTをエスケープ処理
 		 */
 		$posts = h_array($_POST);
@@ -22,37 +44,25 @@ try {
 		 */
 		check_token($posts['token']);
 
-		$json_data[0] = true; // バリデーション結果
-		$json_data[1] = '';  // last_insert_id
-		$json_data[2] = set_token(); // 新しいtokenをset
-
-		$tmp_name = $_FILES['new_illust']['tmp_name'];
-		$error = $_FILES['new_illust']['error'];
-
 		// ▼ アップロードされたか
 		if ($error === UPLOAD_ERR_NO_FILE || ! isset($_FILES['new_illust']) || ! $tmp_name) {
-			$json_data[0] = false;
-			$json_data[] = '画像ファイルを選択して下さい。';
-			throw new Exception('');
+			$_SESSION['upload_new_illust']['flg'] = false;
+			$_SESSION['upload_new_illust']['err_msg'][] = '画像ファイルを選択して下さい。';
+			throw new ValidateErrorException('');
 		}
 
 		// ▼ ファイルサイズをチェック
-		$max = 1024 * 1024 * 2; // ファイルサイズの上限 2MB
 		$size = filesize($tmp_name); // ファイルサイズを取得
-		if ($size > $max){
-			$json_data[0] = false;
-			$json_data[] = 'ファイルサイズは2MBまでです。';
-		}
-		if ($size === (int)0) {
-			$json_data[0] = false;
-			$json_data[] = 'ファイルサイズが0MBです。';
+		if ($size > $posts['MAX_FILE_SIZE']){
+			$_SESSION['upload_new_illust']['flg'] = false;
+			$_SESSION['upload_new_illust']['err_msg'][] = 'ファイルサイズは2MBまでです。';
 		}
 
 		// ▼ ファイルが壊れていないか
 		$file = file_get_contents($tmp_name);
-		if (! $file) {
-			$json_data[0] = false;
-			$json_data[] = 'ファイルが壊れています。';
+		if (! $file || $size === (int)0) {
+			$_SESSION['upload_new_illust']['flg'] = false;
+			$_SESSION['upload_new_illust']['err_msg'][] = 'ファイルが壊れています。';
 		}
 
 		// ▼ 拡張子が許可されたものか（jpeg, ong, gif）
@@ -70,16 +80,16 @@ try {
 						$finfotype === 'image/x-png') {
 				$ext = 'png';
 			} else {
-				$json_data[0] = false;
-				$json_data[] = 'アップロード可能なファイルはgif、jpeg、pngのみです。';
+				$_SESSION['upload_new_illust']['flg'] = false;
+				$_SESSION['upload_new_illust']['err_msg'][] = 'アップロード可能なファイルはgif、jpeg、pngのみです。';
 			}
 		} else {
-			$json_data[0] = false;
-			$json_data[] = 'アップロード可能なファイルはgif、jpeg、pngのみです。';
+			$_SESSION['upload_new_illust']['flg'] = false;
+			$_SESSION['upload_new_illust']['err_msg'][] = 'アップロード可能なファイルはgif、jpeg、pngのみです。';
 		}
 
 		// ▼ バリデーションの結果
-		if (! $json_data[0]) {
+		if (! $_SESSION['upload_new_illust']['flg'] ) {
 			throw new ValidateErrorException('');
 		}
 		
@@ -154,15 +164,49 @@ try {
 			imagedestroy($src);
 		}
 		
-		
 		/**
-		 * ▼ 画像を表示
+		 * ▼ DB処理
 		 */
-		$thumb_file = file_get_contents($thumb_move_to);
-		$image = base64_encode($thumb_file);
-		echo '<img src="data:' . $finfotype . ';base64,' . $image . '">';
+		 $dbh = db_connect($dsn, $db_user, $db_password);
+		 
+		 try {
+		 	$dbh->beginTransaction();
+		 	
+			$sql = 'INSERT INTO illustrations 
+						(created_at,
+							user_id,
+							filename,
+							filename_thumb,
+							mime) 
+					VALUES(now(),
+							:user_id,
+							:filename,
+							:filename_thumb,
+							:mime)';
+			$stmt = $dbh->prepare($sql);
+			$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+			$stmt->bindValue(':filename', $original, PDO::PARAM_STR);
+			$stmt->bindValue(':filename_thumb', $thumb, PDO::PARAM_STR);
+			$stmt->bindValue(':mime', $finfotype, PDO::PARAM_STR);
+			$stmt->execute();
+			$count = $stmt->rowCount();
+			if (! $count) {
+				throw new SqlErrorException('');
+			}
+		 	
+		 	$last_insert_id = $dbh->lastInsertId();
+		 	$dbh->commit();
+		 } catch (SqlErrorException $e) {
+		 	$dbh->rollBack();
+			$_SESSION['upload_new_illust']['flg'] = false;
+			$_SESSION['upload_new_illust']['err_msg'][] = 'DB ERROR:もう一度やり直して下さい。';
+			header('Location: ../upload_new_illustration.php');
+			exit;
+		 }
+
+		unset($_SESSION['upload_new_illust']);
+		header ('Location: ../update_illustration.php?id=' . $last_insert_id);
 		exit;
-		
 	} else {
 		throw new NotPostException();
 	}
@@ -173,11 +217,11 @@ try {
 	header ('Location: ../index.php');
 	exit;
 } catch (ValidateErrorException $e) {
-	header('Content-Type: application/json; charset=utf-8');
-	header('X-Content-Type-Options: nosniff');
-	echo json_encode($json_data);
+	header('Location: ../upload_new_illustration.php');
 	exit;
 } catch (UploadImageErrorException $e) {
-	echo 'アップロードに失敗しました。';
+	$_SESSION['upload_new_illust']['flg'] = false;
+	$_SESSION['upload_new_illust']['err_msg'][] = 'SAVE ERROR:もう一度やり直して下さい。';
+	header('Location: ../upload_new_illustration.php');
 	exit;
 }

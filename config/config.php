@@ -17,3 +17,4 @@
 	class CsrfErrorException extends Exception {};
 	class ValidateErrorException extends Exception {};
 	class UploadImageErrorException extends Exception {};
+	class SqlErrorException extends Exception {};

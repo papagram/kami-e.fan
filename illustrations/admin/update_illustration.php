@@ -32,6 +32,13 @@ $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
 $stmt->execute();
 $rec = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
+// 画像表示
+$thumb_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/thumb/';
+$thumb_img = file_get_contents($thumb_dir . $rec['filename_thumb']);
+$image = base64_encode($thumb_img);
+$src = "data: {$rec['mime']}; base64, {$image}";
+
 // 変数初期化
 $input_title = (isset($_SESSION['update_illust']['input_title'])) ? $_SESSION['update_illust']['input_title'] : $rec['title'];
 $input_price = (isset($_SESSION['update_illust']['input_price'])) ? $_SESSION['update_illust']['input_price'] : $rec['price'];
