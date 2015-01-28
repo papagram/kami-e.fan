@@ -79,3 +79,23 @@
 		
 		return array($new_w, $new_h);
 	}
+
+/**
+ * ▼ 画像ファイルをバイナリで読み取り、base64でエンコ－ド
+ */
+	function image($resource, $user_id, $count) {
+		$dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/original/';
+		$dir_thumb = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/thumb/';
+		
+		for ($i=0; $i<$count; $i++) {
+			if (! $resource[$i]['filename_thumb']) {
+				$file = file_get_contents($dir . $resource[$i]['filename']);
+				$image[] = base64_encode($file);
+			} else {
+				$file = file_get_contents($dir_thumb . $resource[$i]['filename_thumb']);
+				$image[] = base64_encode($file);
+			}
+		}
+		
+		return $image;
+	}
