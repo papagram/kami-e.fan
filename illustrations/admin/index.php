@@ -9,6 +9,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
+/**
+ * ▼ ページタイトルは必ず定義
+ */
+$page_title = '管理ページ'; 
 
 /**
  * ▼ DB処理
