@@ -32,12 +32,11 @@ $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
 $stmt->execute();
 $rec = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-// 画像表示
-$thumb_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/thumb/';
-$thumb_img = file_get_contents($thumb_dir . $rec['filename_thumb']);
-$image = base64_encode($thumb_img);
-$src = "data: {$rec['mime']}; base64, {$image}";
+/**
+ * ▼ 画像データを取得 バイナリデータをbase64で返し、幅、高さを取得
+ * ▼ 第3引数にモード指定で表示サイズ変更 引数無しの場合オリジナルサイズ
+ */
+$image = image_thumb($rec, $user_id);
 
 // 変数初期化
 $input_title = (isset($_SESSION['update_illust']['input_title'])) ? $_SESSION['update_illust']['input_title'] : $rec['title'];

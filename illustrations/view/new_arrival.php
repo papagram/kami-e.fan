@@ -13,7 +13,9 @@
 			</div>
 			<div class="col col-md-10">
 				<?php for ($i=0; $i<$count; $i++): ?>
-					<a href=""><img src="data: <?php echo h($rec[$i]['mime'])?>; base64, <?php echo $images[$i]; ?>"></a>
+					<a href="./show_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">
+						<img src="data: <?php echo h($rec[$i]['mime'])?>; base64, <?php echo $images[$i]; ?>">
+					</a>
 				<?php endfor; ?>
 				<div>
 				<ul class="pagination pagination-sm">

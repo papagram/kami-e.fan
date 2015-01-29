@@ -8,6 +8,7 @@
 
 // 仮のuser_id
 	$user_id = 1;
+	$user_name = 'SHINYA';
 
 // 現日時を取得
 	$date = new DateTime();
@@ -19,3 +20,4 @@
 	class UploadImageErrorException extends Exception {};
 	class SqlErrorException extends Exception {};
 	class GetParamErrorException extends Exception {};
+	class NotFoundException extends Exception {};

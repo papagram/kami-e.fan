@@ -55,7 +55,7 @@ try {
 	$stmt->execute();
 	$rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$count = count($rec); // 取得件数
-	$images = image($rec, $user_id, $count); // 画像ファイルのバイナリをbase64で返す
+	$images = images($rec, $user_id, $count); // 画像ファイルのバイナリをbase64で返す
 	
 	$prev = ($current_page !== $first_page) ? $current_page - 1 : $first_page;
 	$next = ($current_page !== $last_page) ? $current_page + 1 : $last_page;

@@ -16,7 +16,7 @@
 					<form action="./update/update_illustration.php" method="post" class="form-horizontal">
 						<fieldset>
 							<legend>編集</legend>
-							<img src="<?php echo h($src); ?>">
+							<img src="data: <?php echo h($rec['mime'])?>; base64, <?php echo $image[0]; ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
 							<div class="form-group">
 								<label for="title">タイトル</label>
 								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control">

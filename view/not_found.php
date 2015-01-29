@@ -12,14 +12,7 @@
 				<span>メニュー</span>
 			</div>
 			<div class="col col-md-10">
-				<?php for ($i=0; $i<$count; $i++): ?>
-					<a href="./illustrations/show_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">
-						<img src="data: <?php echo h($rec[$i]['mime'])?>; base64, <?php echo $images[$i]; ?>">
-					</a>
-				<?php endfor; ?>
-				<div>
-					<a href="./illustrations/new_arrival.php" class="pull-right">more</a>
-				</div>
+				<h1>お探しのイラストは見つかりません。</h1>
 			</div>
 		</div>
 	</div>
