@@ -18,3 +18,4 @@
 	class ValidateErrorException extends Exception {};
 	class UploadImageErrorException extends Exception {};
 	class SqlErrorException extends Exception {};
+	class GetParamErrorException extends Exception {};
