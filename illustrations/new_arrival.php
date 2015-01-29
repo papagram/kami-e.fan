@@ -12,7 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 /**
  * ▼ ページタイトルは必ず定義
  */
-$page_title = BRAND_NAME . 'へようこそ！'; 
+$page_title = '新着イラスト'; 
 
 
 /**
@@ -20,7 +20,7 @@ $page_title = BRAND_NAME . 'へようこそ！';
  * ▼ 新着イラスト一覧表示　全てselect 降順
  */
 $dbh = db_connect($dsn, $db_user, $db_password);
-$sql = 'SELECT * FROM illustrations ORDER BY id DESC limit 5';
+$sql = 'SELECT * FROM illustrations ORDER BY id DESC';
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -31,4 +31,4 @@ $images = image($rec, $user_id, $count); // 画像ファイルのバイナリを
 /**
  * ▼ viewファイル呼び出し
  */
-require ('./view/index.php');
+require ('./view/new_arrival.php');

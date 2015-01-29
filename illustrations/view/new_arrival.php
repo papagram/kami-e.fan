@@ -15,9 +15,6 @@
 				<?php for ($i=0; $i<$count; $i++): ?>
 					<img src="data: <?php echo h($rec[$i]['mime'])?>; base64, <?php echo $images[$i]; ?>">
 				<?php endfor; ?>
-				<div>
-					<a href="./illustrations/new_arrival.php">more</a>
-				</div>
 			</div>
 		</div>
 	</div>
