@@ -10,6 +10,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
 
 /**
+ * ▼ classファイルを読み込む
+ */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
+
+
+/**
  * ▼ ページタイトルは必ず定義
  */
 $page_title = '編集'; 
@@ -22,15 +28,11 @@ if (! ctype_digit($_GET['id'])) {
 $id= h($_GET['id']);
 
 /**
- * ▼ DB処理
- * ▼ idをキーにセレクトする
+ * ▼ DB処理 IDをキーにイラストを絞り込む
  */
-$dbh = db_connect($dsn, $db_user, $db_password);
-$sql = 'SELECT * FROM illustrations WHERE id = :id';
-$stmt = $dbh->prepare($sql);
-$stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
-$stmt->execute();
-$rec = $stmt->fetch(PDO::FETCH_ASSOC);
+$model = new IllustrationsModel($dsn, $db_user, $db_password);
+$rec = $model->findById($id);
+
 
 /**
  * ▼ 画像データを取得 パス、幅、高さを取得

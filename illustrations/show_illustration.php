@@ -1,13 +1,17 @@
 <?php
 
 /**
- * ▼ $_SERVER['DOCUMENT_ROOT'] === 'C:/xampp/htdocs/kami-e.fan';
  * ▼ 外部ファイルを読み込む
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+
+/**
+ * ▼ classファイルを読み込む
+ */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
 
 
 try {
@@ -16,20 +20,12 @@ try {
 		throw new GetParamErrorException('');
 	}
 	$id = (int)$_GET['id'];
-	
+
 	/**
-	 * ▼ DB処理
-	 * ▼ illust_idをキーにセレクトする
+	 * ▼ DB処理 IDをキーにイラストを絞り込む
 	 */
-	$dbh = db_connect($dsn, $db_user, $db_password);
-	$sql = 'SELECT * FROM illustrations WHERE id = :id';
-	$stmt = $dbh->prepare($sql);
-	$stmt->bindValue(':id', $id, PDO::PARAM_INT);
-	$stmt->execute();
-	$rec = $stmt->fetch(PDO::FETCH_ASSOC);
-	if (! $rec) {
-		throw new NotFoundException('');
-	}
+	$model = new IllustrationsModel($dsn, $db_user, $db_password);
+	$rec = $model->findById($id);
 	
 	/**
 	 * ▼ 画像データを取得 パス、幅、高さを取得
