@@ -1,5 +1,7 @@
 <?php
 
+// これはサンプルです
+
 $db_server = 'localhost';
 $db_user = 'user_name';
 $db_password = 'your_password';
