@@ -10,7 +10,7 @@
 		<div class="row">
 			<div class="col col-md-10">
 				<div>
-					<img src="data: <?php echo h($rec['mime'])?>; base64, <?php echo $image[0]; ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
+					<img src="<?php echo $image[0]; ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-body">

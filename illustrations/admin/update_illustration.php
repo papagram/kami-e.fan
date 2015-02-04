@@ -33,7 +33,7 @@ $stmt->execute();
 $rec = $stmt->fetch(PDO::FETCH_ASSOC);
 
 /**
- * ▼ 画像データを取得 バイナリデータをbase64で返し、幅、高さを取得
+ * ▼ 画像データを取得 パス、幅、高さを取得
  * ▼ 第3引数にモード指定で表示サイズ変更 引数無しの場合オリジナルサイズ
  */
 $image = image_thumb($rec, $user_id);

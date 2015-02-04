@@ -63,6 +63,9 @@
  * ▼ サムネイル用のサイズを取得
  */
 	function get_new_thumb_size($w, $h, $max_w, $max_h) {
+		$new_w = $w;
+		$new_h = $h;
+		
 		// ▼ 原寸幅が最大幅より大きい　かつ　原寸高さよりも原寸幅が大きい
 		if ($w > $max_w && $w > $h)
 		{
@@ -81,60 +84,51 @@
 	}
 
 /**
- * ▼ 画像ファイルをバイナリで読み取り、base64でエンコ－ド
+ * ▼ 画像ファイルのURLを返す
  */
 	function image_original($resource, $user_id, $mode = 'row') {
-		$dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/original/';
-		$file = file_get_contents($dir . $resource['filename']);
-		
-		list($w, $h) = getimagesize($dir . $resource['filename']);
+		list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/{$resource['filename']}");
+		$path = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/original/{$resource['filename']}";
 		if ($mode === 'row') {
-			return array(base64_encode($file), $w, $h);
+			return array($path, $w, $h);
 		} elseif ($mode === 'middle') {
 			$max_w = 940;
 			$max_h = 940;
 			list($new_w, $new_h) = get_new_thumb_size($w, $h, $max_w, $max_h);
 			
-			return array(base64_encode($file), $new_w, $new_h);
+			return array($path, $new_w, $new_h);
 		}
 	}
 
 	function image_thumb($resource, $user_id, $mode = 'row') {
-		$dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/original/';
-		$dir_thumb = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/thumb/';
-		
 		if (! $resource['filename_thumb']) {
-			$file = file_get_contents($dir . $resource['filename']);
-			list($w, $h) = getimagesize($dir . $resource['filename']);
+			list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/{$resource['filename']}");
+			$path = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/original/{$resource['filename']}";
 		} else {
-			$file = file_get_contents($dir_thumb . $resource['filename_thumb']);
-			list($w, $h) = getimagesize($dir_thumb . $resource['filename_thumb']);
+			list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
+			$path = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}";
 		}
 		
 		if ($mode === 'row') {
-			return array(base64_encode($file), $w, $h);
+			return array($path, $w, $h);
 		} elseif ($mode === 'xs') {
 			$max_w = 80;
 			$max_h = 80;
 			list($new_w, $new_h) = get_new_thumb_size($w, $h, $max_w, $max_h);
 			
-			return array(base64_encode($file), $new_w, $new_h);
+			return array($path, $new_w, $new_h);
 		}
 	}
 
 	function images($resource, $user_id, $count) {
-		$dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/original/';
-		$dir_thumb = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/thumb/';
-		
+		$paths = array();
 		for ($i=0; $i<$count; $i++) {
 			if (! $resource[$i]['filename_thumb']) {
-				$file = file_get_contents($dir . $resource[$i]['filename']);
-				$images[] = base64_encode($file);
+				$paths[] = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/original/{$resource[$i]['filename']}";
 			} else {
-				$file = file_get_contents($dir_thumb . $resource[$i]['filename_thumb']);
-				$images[] = base64_encode($file);
+				$paths[] = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/thumb/{$resource[$i]['filename_thumb']}";
 			}
 		}
 		
-		return $images;
+		return $paths;
 	}
