@@ -14,7 +14,7 @@
 			<div class="col col-md-10">
 				<?php for ($i=0; $i<$count; $i++): ?>
 					<a href="./show_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">
-						<img src="<?php echo $images[$i]; ?>">
+						<img src="<?php echo h($images[$i]); ?>">
 					</a>
 				<?php endfor; ?>
 				<div>

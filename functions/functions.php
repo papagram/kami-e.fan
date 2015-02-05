@@ -11,6 +11,13 @@
 	}
 
 /**
+ * ▼ ルートURLを返す
+ */
+	function root_url() {
+		return 'http://' . $_SERVER['HTTP_HOST'];
+	}
+
+/**
  * ▼ XSS対策
  */
 	function h($val) {
@@ -21,22 +28,6 @@
 		return array_map('h', $array);
 	}
 
-/**
- * ▼ DBに接続
- */
-	function db_connect($dsn, $db_user, $db_password) {
-		try{
-			$dbh = new PDO($dsn, $db_user, $db_password);
-			$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			return $dbh;
-		}catch(PDOException $e){
-			echo 'ただいま障害により大変ご迷惑をお掛け致しております。';
-			exit;
-		}
-	}
- 
 /**
  * ▼ CSRF対策
  */
@@ -58,6 +49,23 @@
 			array_splice($_SESSION['tokens'], $key, 1);
 		}
 	}
+
+/**
+ * ▼ DBに接続
+ */
+	function db_connect($dsn, $db_user, $db_password) {
+		try{
+			$dbh = new PDO($dsn, $db_user, $db_password);
+			$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			return $dbh;
+		}catch(PDOException $e){
+			echo 'ただいま障害により大変ご迷惑をお掛け致しております。';
+			exit;
+		}
+	}
+ 
 
 /**
  * ▼ サムネイル用のサイズを取得
@@ -88,7 +96,7 @@
  */
 	function image_original($resource, $user_id, $mode = 'row') {
 		list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/{$resource['filename']}");
-		$path = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/original/{$resource['filename']}";
+		$path = root_url() . "/images/{$user_id}/illustrations/original/{$resource['filename']}";
 		if ($mode === 'row') {
 			return array($path, $w, $h);
 		} elseif ($mode === 'middle') {
@@ -103,10 +111,10 @@
 	function image_thumb($resource, $user_id, $mode = 'row') {
 		if (! $resource['filename_thumb']) {
 			list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/{$resource['filename']}");
-			$path = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/original/{$resource['filename']}";
+			$path = root_url() . "/images/{$user_id}/illustrations/original/{$resource['filename']}";
 		} else {
 			list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
-			$path = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}";
+			$path = root_url() . "/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}";
 		}
 		
 		if ($mode === 'row') {
@@ -124,9 +132,9 @@
 		$paths = array();
 		for ($i=0; $i<$count; $i++) {
 			if (! $resource[$i]['filename_thumb']) {
-				$paths[] = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/original/{$resource[$i]['filename']}";
+				$paths[] = root_url() . "/images/{$user_id}/illustrations/original/{$resource[$i]['filename']}";
 			} else {
-				$paths[] = "http://{$_SERVER['HTTP_HOST']}/images/{$user_id}/illustrations/thumb/{$resource[$i]['filename_thumb']}";
+				$paths[] = root_url() . "/images/{$user_id}/illustrations/thumb/{$resource[$i]['filename_thumb']}";
 			}
 		}
 		
