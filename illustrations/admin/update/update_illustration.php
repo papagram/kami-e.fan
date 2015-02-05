@@ -1,13 +1,17 @@
 <?php
 
 /**
- * ▼ $_SERVER['DOCUMENT_ROOT'] === 'C:/xampp/htdocs/kami-e.fan';
  * ▼ 外部ファイルをインクルード
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+
+/**
+ * ▼ classファイルを読み込む
+ */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
 
 
 try {
@@ -26,7 +30,7 @@ try {
 		$_SESSION['update_illust']['flg'] = true;
 		$_SESSION['update_illust']['err_msg'] = array();
 	 	$_SESSION['update_illust']['input_title'] = '';
-	 	$_SESSION['update_illust']['input_price'] = '';
+	 	$_SESSION['update_illust']['input_price'] = (int)0;
 
 		/**
 		 * ▼ タイトルは30文字まで
@@ -61,43 +65,14 @@ try {
 		 	throw new ValidateErrorException('');
 		 }
 		 
-		/**
-		 * ▼ DB処理
-		 */
-		 $dbh = db_connect($dsn, $db_user, $db_password);
-		 
-		 try {
-		 	$dbh->beginTransaction();
-
-			$sql = 'UPDATE illustrations 
-						SET title = :title, price = :price 
-					WHERE id = :id';
-			$stmt = $dbh->prepare($sql);
-			$stmt->bindValue(':title', $posts['title'], PDO::PARAM_STR);
-			$stmt->bindValue(':price', (int)$posts['price'], PDO::PARAM_INT);
-			$stmt->bindValue(':id', (int)$posts['id'], PDO::PARAM_INT);
-			$stmt->execute();
-			$count = $stmt->rowCount();
-			if (! $count) {
-				throw new SqlErrorException('');
-			}
-		 	
-		 	$dbh->commit();
-		 } catch (SqlErrorException $e) {
-		 	$dbh->rollBack();
-			$_SESSION['update_illust']['flg'] = false;
-			$_SESSION['update_illust']['err_msg'][] = 'DB ERROR:もう一度やり直して下さい。';
-			$_SESSION['update_illust']['input_title'] = $_POST['title'];
-			$_SESSION['update_illust']['input_price'] = $_POST['price'];
-			header('Location: ../update_illustration.php?id=' . (int)$posts['id']);
-		 	exit;
-		 }
+		$model = new IllustrationsModel($dsn, $db_user, $db_password);
+		$model->Update($posts);
 		 
 		unset($_SESSION['update_illust']);
 		header('Location: ../index.php');
 		exit;
 	} else {
-	 throw new NotPostException();
+		throw new NotPostException();
 	}
 } catch (NotPostException $e) {
 	header ('Location: ../index.php');

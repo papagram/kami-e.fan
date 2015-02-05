@@ -1,13 +1,17 @@
 <?php
 
 /**
- * ▼ $_SERVER['DOCUMENT_ROOT'] === 'C:/xampp/htdocs/kami-e.fan';
  * ▼ 外部ファイルをインクルード
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+
+/**
+ * ▼ classファイルを読み込む
+ */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
 
 
 try {
@@ -21,11 +25,11 @@ try {
 		$error = $_FILES['new_illust']['error'];
 
 		/**
-		 * ▼ php.iniのpost_max_sizeディレクティブを超えているか 8MB
-		 * ▼ php.iniのupload_max_filesizeディレクティブを超えているか 4MB
+		 * ▼ php.iniのpost_max_sizeディレクティブを超えているか 32MB
+		 * ▼ php.iniのupload_max_filesizeディレクティブを超えているか 32MB
 		 * ▼ MAX_FILE_SIZEを超えているか 2MB
 		 */
-		$post_max_size = 1024 * 1024 * 8;
+		$post_max_size = 1024 * 1024 * 32;
 		if ($_SERVER['CONTENT_LENGTH'] > $post_max_size ||
 			$error === UPLOAD_ERR_INI_SIZE || 
 			$error === UPLOAD_ERR_FORM_SIZE) {
@@ -97,7 +101,7 @@ try {
 		/**
 		 * ▼ 画像を保存
 		 */
-		$dir = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/original/';
+		$dir = "{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/";
 		$filename = sha1(microtime() . mt_rand());
 		$original = $filename . '.' . $ext;
 		if (! is_dir($dir)) {
@@ -119,7 +123,7 @@ try {
 		
 		// ▼ 幅か高さのどちらかが最大値を超えていたらサムネイル作成
 		if ($w > $max_w || $h > $max_h) {
-			$dir_thumb = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $user_id . '/illustrations/thumb/';
+			$dir_thumb = "{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/thumb/";
 			$thumb = $filename . '_s.' . $ext;
 			if (! is_dir($dir_thumb)) {
 				mkdir($dir_thumb, 0777, true);
@@ -129,8 +133,7 @@ try {
 			list($new_w, $new_h) = get_new_thumb_size($w, $h, $max_w, $max_h);
 			
 			$dest = imagecreatetruecolor($new_w, $new_h);
-			if ($finfotype === 'image/gif')
-			{
+			if ($finfotype === 'image/gif'){
 				$src = imagecreatefromgif($move_to);
 				imagecopyresampled($dest, $src,
 									0, 0,
@@ -138,9 +141,7 @@ try {
 									$new_w, $new_h,
 									$w, $h);
 				imagegif($dest, $thumb_move_to);
-			}
-			elseif ($finfotype === 'image/jpeg' || $mime === 'image/pjpeg')
-			{
+			} elseif ($finfotype === 'image/jpeg' || $mime === 'image/pjpeg') {
 				$src = imagecreatefromjpeg($move_to);
 				imagecopyresampled($dest, $src,
 									0, 0,
@@ -148,10 +149,7 @@ try {
 									$new_w, $new_h,
 									$w, $h);
 				imagejpeg($dest, $thumb_move_to);
-
-			}
-			elseif ($finfotype === 'image/png' || $mime === 'image/x-png')
-			{
+			} elseif ($finfotype === 'image/png' || $mime === 'image/x-png') {
 				$src = imagecreatefrompng($move_to);
 				imagecopyresampled($dest, $src,
 									0, 0,
@@ -164,48 +162,12 @@ try {
 			imagedestroy($src);
 		}
 		
-		/**
-		 * ▼ DB処理
-		 */
-		 $dbh = db_connect($dsn, $db_user, $db_password);
-		 
-		 try {
-		 	$dbh->beginTransaction();
-		 	
-			$sql = 'INSERT INTO illustrations 
-						(created_at,
-							user_id,
-							filename,
-							filename_thumb,
-							mime) 
-					VALUES(now(),
-							:user_id,
-							:filename,
-							:filename_thumb,
-							:mime)';
-			$stmt = $dbh->prepare($sql);
-			$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-			$stmt->bindValue(':filename', $original, PDO::PARAM_STR);
-			$stmt->bindValue(':filename_thumb', $thumb, PDO::PARAM_STR);
-			$stmt->bindValue(':mime', $finfotype, PDO::PARAM_STR);
-			$stmt->execute();
-			$count = $stmt->rowCount();
-			if (! $count) {
-				throw new SqlErrorException('');
-			}
-		 	
-		 	$last_insert_id = $dbh->lastInsertId();
-		 	$dbh->commit();
-		 } catch (SqlErrorException $e) {
-		 	$dbh->rollBack();
-			$_SESSION['upload_new_illust']['flg'] = false;
-			$_SESSION['upload_new_illust']['err_msg'][] = 'DB ERROR:もう一度やり直して下さい。';
-			header('Location: ../upload_new_illustration.php');
-			exit;
-		 }
+		// ▼ イラスト情報をDBへインサート
+		$model = new IllustrationsModel($dsn, $db_user, $db_password);
+		$model->Insert($user_id, $original, $thumb, $finfotype);
 
 		unset($_SESSION['upload_new_illust']);
-		header ('Location: ../update_illustration.php?id=' . $last_insert_id);
+		header ('Location: ../update_illustration.php?id=' . h( $model->getLastInsertId() ) );
 		exit;
 	} else {
 		throw new NotPostException();

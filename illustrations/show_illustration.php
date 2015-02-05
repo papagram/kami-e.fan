@@ -44,9 +44,9 @@ try {
 	 */
 	require ('./view/show_illustration.php');
 } catch (GetParamErrorException $e) {
-	header('Location: ' . $_SERVER['DOCUMENT_ROOT'] . '/not_found.php');
+	header('Location: ' . h(root_url()) . '/not_found.php');
 	exit;
 } catch (NotFoundException $e) {
-	header('Location: ' . $_SERVER['DOCUMENT_ROOT'] . '/not_found.php');
+	header('Location: ' . h(root_url()) . '/not_found.php');
 	exit;
 }

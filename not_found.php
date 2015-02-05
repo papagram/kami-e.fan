@@ -1,7 +1,6 @@
 <?php
 
 /**
- * ▼ $_SERVER['DOCUMENT_ROOT'] === 'C:/xampp/htdocs/kami-e.fan';
  * ▼ 外部ファイルを読み込む
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
