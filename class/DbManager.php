@@ -1,5 +1,8 @@
 <?php
 
+// ▼ DBの設定ファイルを読み込む
+require_once(doc_root() . '/config/db_config.php');
+
 class DbManager
 {
 	protected $dbh = null;

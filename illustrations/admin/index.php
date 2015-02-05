@@ -1,30 +1,26 @@
 <?php
 
-/**
- * ▼ $_SERVER['DOCUMENT_ROOT'] === 'C:/xampp/htdocs/kami-e.fan';
- * ▼ 外部ファイルをインクルード
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+// ▼ 共通設定ファイルを読み込む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
-/**
- * ▼ ページタイトルは必ず定義
- */
-$page_title = '管理ページ'; 
+// ▼ classファイルを読み込む
+require_once(doc_root() . '/class/IllustrationsModel.php');
+
 
 /**
  * ▼ DB処理
  * ▼ user_idをキーにセレクトする 降順
  */
-$dbh = db_connect($dsn, $db_user, $db_password);
-$sql = 'SELECT * FROM illustrations WHERE user_id = :user_id ORDER BY id DESC';
-$stmt = $dbh->prepare($sql);
-$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-$stmt->execute();
-$rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$model = new IllustrationsModel($dsn, $db_user, $db_password);
+$rec = $model->findByUserId($user_id);
 $count = count($rec); // 取得件数
 
+// ▼ 画像ファイルのパスを配列で返す
+$images = images($rec, $user_id, $count);
 
+
+// ▼ ページタイトルは必ず定義
+$page_title = $user_name . 'さんのページ'; 
+
+// ▼ viewファイル呼び出し
 require ('./view/index.php');

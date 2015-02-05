@@ -1,9 +1,7 @@
 <?php
 
-/**
- * ▼ classファイルを読み込む
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/class/DbManager.php');
+// ▼ classファイルを読み込む
+require_once(doc_root() . '/class/DbManager.php');
 
 class IllustrationsModel extends DbManager
 {
@@ -55,6 +53,16 @@ class IllustrationsModel extends DbManager
 		$sql = 'SELECT * FROM illustrations ORDER BY id DESC limit :limit';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+		$stmt->execute();
+		
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	public function findByUserId ($user_id)
+	{
+		$sql = 'SELECT * FROM illustrations WHERE user_id = :user_id ORDER BY id DESC';
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT); // セッションからとりたい
 		$stmt->execute();
 		
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);

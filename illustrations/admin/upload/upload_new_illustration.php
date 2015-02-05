@@ -1,24 +1,15 @@
 <?php
 
-/**
- * ▼ 外部ファイルをインクルード
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+// ▼ 共通設定ファイルを読み込む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
-/**
- * ▼ classファイルを読み込む
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
+// ▼ classファイルを読み込む
+require_once(doc_root() . '/class/IllustrationsModel.php');
 
 
 try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		/**
-		 * ▼ 初期化
-		 */
+		// ▼ 変数初期化
 		$_SESSION['upload_new_illust']['flg'] = true;
 		$_SESSION['upload_new_illust']['err_msg'] = array();
 		$tmp_name = $_FILES['new_illust']['tmp_name'];
@@ -38,14 +29,10 @@ try {
 			throw new ValidateErrorException('');
 		}
 
-		/**
-		 * ▼ $_POSTをエスケープ処理
-		 */
+		// ▼ $_POSTをエスケープ処理
 		$posts = h_array($_POST);
 
-		/**
-		 * ▼ Tokenをチェック
-		 */
+		// ▼ tokenをチェック
 		check_token($posts['token']);
 
 		// ▼ アップロードされたか
@@ -98,10 +85,8 @@ try {
 		}
 		
 		
-		/**
-		 * ▼ 画像を保存
-		 */
-		$dir = "{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/";
+		// ▼ 画像を保存
+		$dir = doc_root() . "/images/{$user_id}/illustrations/original/";
 		$filename = sha1(microtime() . mt_rand());
 		$original = $filename . '.' . $ext;
 		if (! is_dir($dir)) {
@@ -113,17 +98,14 @@ try {
 			throw new UploadImageErrorException('');
 		}
 		
-		
-		/**
-		 * ▼ サムネイルを作成
-		 */
+		// ▼ サムネイルを作成　値を定義
 		$max_w = 160;
 		$max_h = 160;
 		list($w, $h) = getimagesize($move_to);
 		
 		// ▼ 幅か高さのどちらかが最大値を超えていたらサムネイル作成
 		if ($w > $max_w || $h > $max_h) {
-			$dir_thumb = "{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/thumb/";
+			$dir_thumb = doc_root() . "/images/{$user_id}/illustrations/thumb/";
 			$thumb = $filename . '_s.' . $ext;
 			if (! is_dir($dir_thumb)) {
 				mkdir($dir_thumb, 0777, true);

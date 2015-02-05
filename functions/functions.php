@@ -18,6 +18,13 @@
 	}
 
 /**
+ * ▼ ドキュメントルートのパスを返す
+ */
+	function doc_root() {
+		return $_SERVER['DOCUMENT_ROOT'];
+	}
+
+/**
  * ▼ XSS対策
  */
 	function h($val) {
@@ -51,23 +58,6 @@
 	}
 
 /**
- * ▼ DBに接続
- */
-	function db_connect($dsn, $db_user, $db_password) {
-		try{
-			$dbh = new PDO($dsn, $db_user, $db_password);
-			$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			return $dbh;
-		}catch(PDOException $e){
-			echo 'ただいま障害により大変ご迷惑をお掛け致しております。';
-			exit;
-		}
-	}
- 
-
-/**
  * ▼ サムネイル用のサイズを取得
  */
 	function get_new_thumb_size($w, $h, $max_w, $max_h) {
@@ -95,7 +85,7 @@
  * ▼ 画像ファイルのURLを返す
  */
 	function image_original($resource, $user_id, $mode = 'row') {
-		list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/{$resource['filename']}");
+		list($w, $h) = getimagesize(doc_root() . "/images/{$user_id}/illustrations/original/{$resource['filename']}");
 		$path = root_url() . "/images/{$user_id}/illustrations/original/{$resource['filename']}";
 		if ($mode === 'row') {
 			return array($path, $w, $h);
@@ -110,10 +100,10 @@
 
 	function image_thumb($resource, $user_id, $mode = 'row') {
 		if (! $resource['filename_thumb']) {
-			list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/original/{$resource['filename']}");
+			list($w, $h) = getimagesize(doc_root() . "/images/{$user_id}/illustrations/original/{$resource['filename']}");
 			$path = root_url() . "/images/{$user_id}/illustrations/original/{$resource['filename']}";
 		} else {
-			list($w, $h) = getimagesize("{$_SERVER['DOCUMENT_ROOT']}/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
+			list($w, $h) = getimagesize(doc_root() . "/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
 			$path = root_url() . "/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}";
 		}
 		

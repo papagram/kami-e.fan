@@ -1,17 +1,10 @@
 <?php
 
-/**
- * ▼ 外部ファイルをインクルード
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+// ▼ 共通設定ファイルを読み込む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
-/**
- * ▼ classファイルを読み込む
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
+// ▼ classファイルを読み込む
+require_once(doc_root() . '/class/IllustrationsModel.php');
 
 
 try {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php require ($_SERVER['DOCUMENT_ROOT'] . '/common_html/head.php'); ?>
+<?php require (doc_root() . '/common_html/head.php'); ?>
 
 <body>
-	<?php require ($_SERVER['DOCUMENT_ROOT'] . '/common_html/header.php'); ?>
+	<?php require (doc_root() . '/common_html/header.php'); ?>
 
 	<div class="container">
 		<div class="row">
@@ -15,6 +15,7 @@
 				<table class="table table-striped">
 					<thead>
 						<th>ID</th>
+						<th>イラスト</th>
 						<th>タイトル</th>
 						<th>価格</th>
 						<th>登録日時</th>
@@ -27,6 +28,7 @@
 						<?php for ($i=0; $i<$count; $i++): ?>
 						<tr>
 							<td><?php echo h($rec[$i]['id']); ?></td>
+							<td><img src="<?php echo h($images[$i])?>"></td>
 							<td><?php echo h($rec[$i]['title']); ?></td>
 							<td><?php echo h($rec[$i]['price']); ?></td>
 							<td><?php echo h($rec[$i]['created_at']); ?></td>
@@ -41,7 +43,7 @@
 		</div>
 	</div>
 
-	<?php require ($_SERVER['DOCUMENT_ROOT'] . '/common_html/footer.php'); ?>
+	<?php require (doc_root() . '/common_html/footer.php'); ?>
 
 </body>
 </html>

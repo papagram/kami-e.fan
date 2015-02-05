@@ -1,17 +1,10 @@
 <?php
 
-/**
- * ▼ 外部ファイルを読み込む
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/db_config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/constants.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php');
+// ▼ 共通設定ファイルを読み込む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
-/**
- * ▼ classファイルを読み込む
- */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/class/IllustrationsModel.php');
+// ▼ classファイルを読み込む
+require_once(doc_root() . '/class/IllustrationsModel.php');
 
 
 try {
@@ -34,14 +27,10 @@ try {
 	$image = image_original($rec, $user_id, 'middle');
 	
 	
-	/**
-	 * ▼ ページタイトルは必ず定義
-	 */
+	// ▼ ページタイトルは必ず定義
 	$page_title = h($rec['title']) . ' | ' . h($user_name) . 'さんのイラスト';
 	
-	/**
-	 * ▼ viewファイル呼び出し
-	 */
+	// ▼ viewファイル呼び出し
 	require ('./view/show_illustration.php');
 } catch (GetParamErrorException $e) {
 	header('Location: ' . h(root_url()) . '/not_found.php');
