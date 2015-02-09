@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php require (doc_root() . '/common_html/head.php'); ?>
+<?php require (doc_root('/common_html/head.php')); ?>
 
 <body>
-	<?php require (doc_root() . '/common_html/header.php'); ?>
+	<?php require (doc_root('/common_html/header.php')); ?>
 
 	<div class="container">
 		<div class="row">
@@ -13,7 +13,7 @@
 			</div>
 			<div class="col col-md-10">
 				<div>
-					<form action="./update/update_illustration.php" method="post" class="form-horizontal">
+					<form action="<?php echo h(root_url('/illustrations/admin/update/update_illustration.php')); ?>" method="post" class="form-horizontal">
 						<fieldset>
 							<legend>編集</legend>
 							<img src="<?php echo h($image[0]); ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
@@ -44,7 +44,7 @@
 		</div>
 	</div>
 
-	<?php require (doc_root() . '/common_html/footer.php'); ?>
+	<?php require (doc_root('/common_html/footer.php')); ?>
 
 </body>
 </html>

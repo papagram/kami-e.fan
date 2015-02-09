@@ -15,4 +15,4 @@ $token = set_token();
 $page_title = 'アップロード'; 
 
 // ▼ viewファイル呼び出し
-require ('./view/upload_new_illustration.php');
+require_once (doc_root('/illustrations/admin/view/upload_new_illustration.php'));

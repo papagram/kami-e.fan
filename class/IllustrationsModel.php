@@ -1,7 +1,7 @@
 <?php
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/DbManager.php');
+require_once(doc_root('/class/DbManager.php'));
 
 class IllustrationsModel extends DbManager
 {
@@ -68,7 +68,7 @@ class IllustrationsModel extends DbManager
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	public function Insert ($user_id, $original, $thumb, $finfotype)
+	public function insert ($user_id, $original, $thumb, $finfotype)
 	{
 		 try {
 		 	$this->dbh->beginTransaction();
@@ -101,8 +101,7 @@ class IllustrationsModel extends DbManager
 		 	$this->dbh->rollBack();
 			$_SESSION['upload_new_illust']['flg'] = false;
 			$_SESSION['upload_new_illust']['err_msg'][] = $e->getMessage();
-			header('Location: ' . h(root_url()) . '/illustrations/admin/upload_new_illustration.php');
-			exit;
+			redirect('/illustrations/admin/upload_new_illustration.php');
 		 }
 	}
 	
@@ -111,7 +110,7 @@ class IllustrationsModel extends DbManager
 		return $this->last_insert_id;
 	}
 	
-	public function Update ($posts)
+	public function update ($posts)
 	{
 		try {
 			$this->dbh->beginTransaction();
@@ -136,12 +135,11 @@ class IllustrationsModel extends DbManager
 			$_SESSION['update_illust']['err_msg'][] = $e->getMessage();
 			$_SESSION['update_illust']['input_title'] = $_POST['title'];
 			$_SESSION['update_illust']['input_price'] = $_POST['price'];
-			header('Location: ' . h(root_url()) . '/illustrations/admin/update_illustration.php?id=' . (int)$posts['id']);
-			exit;
+			redirect('/illustrations/admin/update_illustration.php?id=' . (int)$posts['id']);
 		}
 	}
 	
-	public function Delete ($id, $user_id)
+	public function delete ($id, $user_id)
 	{
 		try {
 			$this->dbh->beginTransaction();
@@ -159,8 +157,7 @@ class IllustrationsModel extends DbManager
 			$this->dbh->commit();
 		} catch (PDOException $e) {
 			$this->dbh->rollBack();
-			header('Location: ' . h(root_url()) . '/illustrations/admin/index.php');
-			exit;
+			redirect('/illustrations/admin/index.php');
 		}
 	}
 }

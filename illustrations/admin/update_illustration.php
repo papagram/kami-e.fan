@@ -4,7 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/IllustrationsModel.php');
+require_once(doc_root('/class/IllustrationsModel.php'));
 
 
 try {
@@ -29,6 +29,7 @@ try {
 	$input_title = (isset($_SESSION['update_illust']['input_title'])) ? $_SESSION['update_illust']['input_title'] : $rec['title'];
 	$input_price = (isset($_SESSION['update_illust']['input_price'])) ? $_SESSION['update_illust']['input_price'] : $rec['price'];
 	$err_msg = (isset($_SESSION['update_illust']['err_msg'])) ? $_SESSION['update_illust']['err_msg'] : array();
+	unset($_SESSION['update_illust']);
 	
 	// ▼ tokenをセット
 	$token = set_token();
@@ -37,11 +38,9 @@ try {
 	$page_title = '編集'; 
 	
 	// ▼ viewファイル呼び出し
-	require ('./view/update_illustration.php');
+	require_once (doc_root('/illustrations/admin/view/update_illustration.php'));
 } catch (GetParamErrorException $e) {
-	header('Location: ' . h(root_url()) . '/not_found.php');
-	exit;
+	redirect('/not_found.php');
 } catch (NotFoundException $e) {
-	header('Location: ' . h(root_url()) . '/not_found.php');
-	exit;
+	redirect('/not_found.php');
 }

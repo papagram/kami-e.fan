@@ -4,7 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/IllustrationsModel.php');
+require_once(doc_root('/class/IllustrationsModel.php'));
 
 
 /**
@@ -23,4 +23,4 @@ $images = images($rec, $user_id, $count);
 $page_title = $user_name . 'さんのページ'; 
 
 // ▼ viewファイル呼び出し
-require ('./view/index.php');
+require_once (doc_root('/illustrations/admin/view/index.php'));

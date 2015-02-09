@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php require (doc_root() . '/common_html/head.php'); ?>
+<?php require_once (doc_root('/common_html/head.php')); ?>
 
 <body>
-	<?php require (doc_root() . '/common_html/header.php'); ?>
+	<?php require_once (doc_root('/common_html/header.php')); ?>
 
 	<div class="container">
 		<div class="row">
@@ -13,7 +13,7 @@
 			</div>
 			<div class="col col-md-10">
 				<div>
-					<form action="./upload/upload_new_illustration.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+					<form action="<?php echo h(root_url('/illustrations/admin/upload/upload_new_illustration.php')); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
 						<legend>新規登録</legend>
 						<fieldset>
 							<span class="required-msg"></span>
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 
-	<?php require (doc_root() . '/common_html/footer.php'); ?>
+	<?php require_once (doc_root('/common_html/footer.php')); ?>
 
 </body>
 </html>

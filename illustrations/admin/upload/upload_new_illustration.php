@@ -4,7 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/IllustrationsModel.php');
+require_once(doc_root('/class/IllustrationsModel.php'));
 
 
 try {
@@ -86,7 +86,7 @@ try {
 		
 		
 		// ▼ 画像を保存
-		$dir = doc_root() . "/images/{$user_id}/illustrations/original/";
+		$dir = doc_root("/images/{$user_id}/illustrations/original/");
 		$filename = sha1(microtime() . mt_rand());
 		$original = $filename . '.' . $ext;
 		if (! is_dir($dir)) {
@@ -105,7 +105,7 @@ try {
 		
 		// ▼ 幅か高さのどちらかが最大値を超えていたらサムネイル作成
 		if ($w > $max_w || $h > $max_h) {
-			$dir_thumb = doc_root() . "/images/{$user_id}/illustrations/thumb/";
+			$dir_thumb = doc_root("/images/{$user_id}/illustrations/thumb/");
 			$thumb = $filename . '_s.' . $ext;
 			if (! is_dir($dir_thumb)) {
 				mkdir($dir_thumb, 0777, true);
@@ -149,23 +149,18 @@ try {
 		$model->Insert($user_id, $original, $thumb, $finfotype);
 
 		unset($_SESSION['upload_new_illust']);
-		header ('Location: ../update_illustration.php?id=' . h( $model->getLastInsertId() ) );
-		exit;
+		redirect('/illustrations/admin/update_illustration.php?id=' . $model->getLastInsertId());
 	} else {
 		throw new NotPostException();
 	}
 } catch (NotPostException $e) {
-	header ('Location: ../index.php');
-	exit;
+	redirect('/illustrations/admin/index.php');
 } catch (CsrfErrorException $e) {
-	header ('Location: ../index.php');
-	exit;
+	redirect('/illustrations/admin/index.php');
 } catch (ValidateErrorException $e) {
-	header('Location: ../upload_new_illustration.php');
-	exit;
+	redirect('/illustrations/admin/upload_new_illustration.php');
 } catch (UploadImageErrorException $e) {
 	$_SESSION['upload_new_illust']['flg'] = false;
 	$_SESSION['upload_new_illust']['err_msg'][] = 'SAVE ERROR:もう一度やり直して下さい。';
-	header('Location: ../upload_new_illustration.php');
-	exit;
+	redirect('/illustrations/admin/upload_new_illustration.php');
 }

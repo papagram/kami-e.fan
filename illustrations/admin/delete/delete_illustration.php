@@ -4,7 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/IllustrationsModel.php');
+require_once(doc_root('/class/IllustrationsModel.php'));
 
 
 try {
@@ -17,9 +17,7 @@ try {
 	$model = new IllustrationsModel($dsn, $db_user, $db_password);
 	$model->Delete($id, $user_id);
 } catch (GetParamErrorException $e) {
-	header('Location: ../index.php');
-	exit;
+	redirect('/illustrations/admin/index.php');
 }
 
-header('Location: ../index.php');
-exit;
+redirect('/illustrations/admin/index.php');

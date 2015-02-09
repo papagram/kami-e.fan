@@ -4,7 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/IllustrationsModel.php');
+require_once(doc_root('/class/IllustrationsModel.php'));
 
 
 try {
@@ -31,11 +31,9 @@ try {
 	$page_title = h($rec['title']) . ' | ' . h($user_name) . 'さんのイラスト';
 	
 	// ▼ viewファイル呼び出し
-	require ('./view/show_illustration.php');
+	require (doc_root('/illustrations/view/show_illustration.php'));
 } catch (GetParamErrorException $e) {
-	header('Location: ' . h(root_url()) . '/not_found.php');
-	exit;
+	redirect('/not_found.php');
 } catch (NotFoundException $e) {
-	header('Location: ' . h(root_url()) . '/not_found.php');
-	exit;
+	redirect('/not_found.php');
 }

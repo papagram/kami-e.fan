@@ -4,7 +4,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
 
 // ▼ classファイルを読み込む
-require_once(doc_root() . '/class/IllustrationsModel.php');
+require_once(doc_root('/class/IllustrationsModel.php'));
 
 
 try {
@@ -62,20 +62,16 @@ try {
 		$model->Update($posts);
 		 
 		unset($_SESSION['update_illust']);
-		header('Location: ../index.php');
-		exit;
+		redirect('/illustrations/admin/index.php');
 	} else {
 		throw new NotPostException();
 	}
 } catch (NotPostException $e) {
-	header ('Location: ../index.php');
-	exit;
+	redirect('/illustrations/admin/index.php');
 } catch (CsrfErrorException $e) {
-	header ('Location: ../index.php');
-	exit;
+	redirect('/illustrations/admin/index.php');
 } catch (ValidateErrorException $e) {
- 	$_SESSION['update_illust']['input_title'] = $_POST['title'];
- 	$_SESSION['update_illust']['input_price'] = $_POST['price'];
-	header('Location: ../update_illustration.php?id=' . (int)$posts['id']);
-	exit;
+	$_SESSION['update_illust']['input_title'] = $_POST['title'];
+	$_SESSION['update_illust']['input_price'] = $_POST['price'];
+	redirect('/illustrations/admin/update_illustration.php?id=' . (int)$posts['id']);
 }

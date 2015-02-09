@@ -8,4 +8,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$
 $page_title = 'NOT FOUND！'; 
 
 // ▼ viewファイル呼び出し
-require ('./view/not_found.php');
+require_once (doc_root('/view/not_found.php'));

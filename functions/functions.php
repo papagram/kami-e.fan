@@ -11,17 +11,25 @@ function d($var) {
 }
 
 /**
-* ▼ ルートURLを返す
+* ▼ ルートURLに引数のパスをつけて返す 　引数無しはトップページにする
 */
-function root_url() {
-	return 'http://' . $_SERVER['HTTP_HOST'];
+function root_url($path = '/index.php') {
+	return 'http://' . $_SERVER['HTTP_HOST'] . $path;
 }
 
 /**
-* ▼ ドキュメントルートのパスを返す
+* ▼ ドキュメントルートに引数のパスをつけて返す 　引数無しはトップページにする
 */
-function doc_root() {
-	return $_SERVER['DOCUMENT_ROOT'];
+function doc_root($path = '/index.php') {
+	return $_SERVER['DOCUMENT_ROOT'] . $path;
+}
+
+/**
+* ▼ リダイレクト　引数にルートURL以下を渡す　引数無しはトップページにする
+*/
+function redirect($path = '/index.php') {
+	header ('Location: ' . h(root_url($path)));
+	exit;
 }
 
 /**
@@ -58,6 +66,13 @@ function check_token($token) {
 }
 
 /**
+* ▼ パスワードを生成
+*/
+function crypt_password($row_password) {
+	return password_hash($row_password, PASSWORD_DEFAULT, array('cost'=>10));
+}
+
+/**
 * ▼ サムネイル用のサイズを取得
 */
 function get_new_thumb_size($w, $h, $max_w, $max_h) {
@@ -85,8 +100,8 @@ function get_new_thumb_size($w, $h, $max_w, $max_h) {
 * ▼ 画像ファイルのURLを返す
 */
 function image_original($resource, $user_id, $mode = 'row') {
-	list($w, $h) = getimagesize(doc_root() . "/images/{$user_id}/illustrations/original/{$resource['filename']}");
-	$path = root_url() . "/images/{$user_id}/illustrations/original/{$resource['filename']}";
+	list($w, $h) = getimagesize(doc_root("/images/{$user_id}/illustrations/original/{$resource['filename']}"));
+	$path = root_url("/images/{$user_id}/illustrations/original/{$resource['filename']}");
 	if ($mode === 'row') {
 		return array($path, $w, $h);
 	} elseif ($mode === 'middle') {
@@ -100,11 +115,11 @@ function image_original($resource, $user_id, $mode = 'row') {
 
 function image_thumb($resource, $user_id, $mode = 'row') {
 	if (! $resource['filename_thumb']) {
-		list($w, $h) = getimagesize(doc_root() . "/images/{$user_id}/illustrations/original/{$resource['filename']}");
-		$path = root_url() . "/images/{$user_id}/illustrations/original/{$resource['filename']}";
+		list($w, $h) = getimagesize(doc_root("/images/{$user_id}/illustrations/original/{$resource['filename']}"));
+		$path = root_url("/images/{$user_id}/illustrations/original/{$resource['filename']}");
 	} else {
-		list($w, $h) = getimagesize(doc_root() . "/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
-		$path = root_url() . "/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}";
+		list($w, $h) = getimagesize(doc_root("/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}"));
+		$path = root_url("/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
 	}
 	
 	if ($mode === 'row') {
@@ -122,9 +137,9 @@ function images($resource, $user_id, $count) {
 	$paths = array();
 	for ($i=0; $i<$count; $i++) {
 		if (! $resource[$i]['filename_thumb']) {
-			$paths[] = root_url() . "/images/{$user_id}/illustrations/original/{$resource[$i]['filename']}";
+			$paths[] = root_url("/images/{$user_id}/illustrations/original/{$resource[$i]['filename']}");
 		} else {
-			$paths[] = root_url() . "/images/{$user_id}/illustrations/thumb/{$resource[$i]['filename_thumb']}";
+			$paths[] = root_url("/images/{$user_id}/illustrations/thumb/{$resource[$i]['filename_thumb']}");
 		}
 	}
 	

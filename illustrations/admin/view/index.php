@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php require (doc_root() . '/common_html/head.php'); ?>
+<?php require_once (doc_root('/common_html/head.php')); ?>
 
 <body>
-	<?php require (doc_root() . '/common_html/header.php'); ?>
+	<?php require_once (doc_root('/common_html/header.php')); ?>
 
 	<div class="container">
 		<div class="row">
@@ -33,8 +33,8 @@
 							<td><?php echo h($rec[$i]['price']); ?></td>
 							<td><?php echo h($rec[$i]['created_at']); ?></td>
 							<td><?php echo h($rec[$i]['user_id']); ?></td>
-							<td><a href="./update_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">編集</a></td>
-							<td><a href="./delete/delete_illustration.php?id=<?php echo h($rec[$i]['id']); ?>">削除</a></td>
+							<td><a href="<?php echo h(root_url('/illustrations/admin/update_illustration.php?id=' . $rec[$i]['id'])); ?>">編集</a></td>
+							<td><a href="<?php echo h(root_url('/illustrations/admin/delete/delete_illustration.php?id=' . $rec[$i]['id'])); ?>">削除</a></td>
 						</tr>
 						<?php endfor; ?>
 					</tbody>
@@ -43,7 +43,7 @@
 		</div>
 	</div>
 
-	<?php require (doc_root() . '/common_html/footer.php'); ?>
+	<?php require_once (doc_root('/common_html/footer.php')); ?>
 
 </body>
 </html>
