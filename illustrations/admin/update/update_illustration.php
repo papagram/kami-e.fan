@@ -10,14 +10,10 @@ require_once(doc_root('/class/IllustrationsModel.php'));
 try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		
-		/**
-		 * ▼ $_POSTをエスケープ処理
-		 */
+		// ▼ $_POSTをエスケープ処理
 		$posts = h_array($_POST);
 
-		/**
-		 * ▼ Tokenをチェック
-		 */
+		// ▼ Tokenをチェック
 		check_token($posts['token']);
 
 		$_SESSION['update_illust']['flg'] = true;
