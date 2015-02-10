@@ -6,6 +6,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/IllustrationsModel.php'));
 
+// ▼ ログインしていなければログインページへリダイレクト
+redirect_login_index($user);
+
 
 try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,17 +58,17 @@ try {
 		 }
 		 
 		$model = new IllustrationsModel($dsn, $db_user, $db_password);
-		$model->Update($posts);
+		$model->Update($posts, $user['id']);
 		 
 		unset($_SESSION['update_illust']);
-		redirect('/illustrations/admin/index.php');
+		redirect('/illustrations/admin/admin_index.php');
 	} else {
 		throw new NotPostException();
 	}
 } catch (NotPostException $e) {
-	redirect('/illustrations/admin/index.php');
+	redirect('/illustrations/admin/admin_index.php');
 } catch (CsrfErrorException $e) {
-	redirect('/illustrations/admin/index.php');
+	redirect('/illustrations/admin/admin_index.php');
 } catch (ValidateErrorException $e) {
 	$_SESSION['update_illust']['input_title'] = $_POST['title'];
 	$_SESSION['update_illust']['input_price'] = $_POST['price'];

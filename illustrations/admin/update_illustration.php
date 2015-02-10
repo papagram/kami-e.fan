@@ -6,6 +6,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/IllustrationsModel.php'));
 
+// ▼ ログインしていなければログインページへリダイレクト
+redirect_login_index($user);
+
 
 try {
 	// ▼ URLパラメータをチェック
@@ -18,11 +21,14 @@ try {
 	$model = new IllustrationsModel($dsn, $db_user, $db_password);
 	$rec = $model->findById($id);
 	
+	// ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
+	match_user_id($rec['user_id'], $user['id']);
+	
 	/**
 	 * ▼ 画像データを取得 パス、幅、高さを取得
 	 * ▼ 第3引数にモード指定で表示サイズ変更 引数無しの場合オリジナルサイズ
 	 */
-	$image = image_thumb($rec, $user_id);
+	$image = image_thumb($rec);
 	
 	
 	// ▼ 変数初期化
@@ -35,10 +41,10 @@ try {
 	$token = set_token();
 	
 	// ▼ ページタイトルは必ず定義
-	$page_title = '編集'; 
+	$page_title = "編集ページ | イラストID: {$rec['id']}"; 
 	
 	// ▼ viewファイル呼び出し
-	require_once (doc_root('/illustrations/admin/view/update_illustration.php'));
+	require_once (doc_root('/illustrations/admin/view/update_illustration_view.php'));
 } catch (GetParamErrorException $e) {
 	redirect('/not_found.php');
 } catch (NotFoundException $e) {

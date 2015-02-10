@@ -15,13 +15,13 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>タイトル： <?php echo h($rec['title']); ?></p>
-						<p>価格： <?php echo h($rec['price']); ?></p>
+						<p>価格： <?php echo h($rec['price']); ?>円</p>
 						<p>登録日： <?php echo h($rec['created_at']); ?></p>
 					</div>
 				</div>
 			</div>
 			<div class="col col-md-2">
-				<?php echo h($user_name); ?>
+				出品者： <?php echo h($rec['user_id']); ?>
 			</div>
 		</div>
 	</div>

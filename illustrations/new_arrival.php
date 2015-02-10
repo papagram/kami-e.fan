@@ -17,12 +17,12 @@ try {
 	// ▼ ページング処理
 	$pager = new Pager($count_max); // コンストラクタに全ての件数を渡す
 
-	// ▼ 新着イラストをセレクト　1ページ当たりの表示件数はPagerクラスの$per_pageプロパティ
+	// ▼ 新着イラストをセレクト　1ページ当たりの表示件数はPagerクラスのper_pageプロパティ
 	$rec =$model->findByPerPage($pager->getPerPage(), $pager->getOffset());
 	$count = count($rec); // 取得件数
 	
 	// ▼ 画像ファイルのパスを配列で返す
-	$images = images($rec, $user_id, $count);
+	$images = images($rec, $count);
 } catch (GetParamErrorException $e) {
 	redirect('/illustrations/new_arrival.php');
 }
@@ -32,4 +32,4 @@ try {
 $page_title = '新着イラスト'; 
 
 // ▼ viewファイル呼び出し
-require (doc_root('/illustrations/view/new_arrival.php'));
+require (doc_root('/illustrations/view/new_arrival_view.php'));

@@ -66,10 +66,35 @@ function check_token($token) {
 }
 
 /**
-* ▼ パスワードを生成
+* ▼ パスワードをハッシュ化
 */
 function crypt_password($row_password) {
 	return password_hash($row_password, PASSWORD_DEFAULT, array('cost'=>10));
+}
+
+/**
+* ▼ セッションのユーザー情報を代入
+*/
+function set_user() {
+	return (isset($_SESSION['user'])) ? $_SESSION['user'] : false;
+}
+
+/**
+* ▼ $userがfalseならばログインページへリダイレクト
+*/
+function redirect_login_index($user) {
+	if (! $user) {
+		redirect('/auth/login_index.php');
+	}
+}
+
+/**
+* ▼ // ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
+*/
+function match_user_id($user_id_db, $user_id_session) {
+	if ($user_id_db !== $user_id_session) {
+		redirect('/users/user_index.php');
+	}
 }
 
 /**
@@ -99,9 +124,18 @@ function get_new_thumb_size($w, $h, $max_w, $max_h) {
 /**
 * ▼ 画像ファイルのURLを返す
 */
-function image_original($resource, $user_id, $mode = 'row') {
-	list($w, $h) = getimagesize(doc_root("/images/{$user_id}/illustrations/original/{$resource['filename']}"));
-	$path = root_url("/images/{$user_id}/illustrations/original/{$resource['filename']}");
+function image_original($resource, $mode = 'row') {
+	$filename = "/images/{$resource['user_id']}/illustrations/original/{$resource['filename']}";
+	if (! file_exists(doc_root($filename))) {
+		$path = root_url('/images/common/no_image.gif');
+		$w = 300;
+		$h = 300;
+		
+		return array($path, $w, $h);
+	}
+	
+	list($w, $h) = getimagesize(doc_root($filename));
+	$path = root_url($filename);
 	if ($mode === 'row') {
 		return array($path, $w, $h);
 	} elseif ($mode === 'middle') {
@@ -113,13 +147,31 @@ function image_original($resource, $user_id, $mode = 'row') {
 	}
 }
 
-function image_thumb($resource, $user_id, $mode = 'row') {
+function image_thumb($resource, $mode = 'row') {
 	if (! $resource['filename_thumb']) {
-		list($w, $h) = getimagesize(doc_root("/images/{$user_id}/illustrations/original/{$resource['filename']}"));
-		$path = root_url("/images/{$user_id}/illustrations/original/{$resource['filename']}");
+		$filename = "/images/{$resource['user_id']}/illustrations/original/{$resource['filename']}";
+		if (! file_exists(doc_root($filename))) {
+			$path = root_url('/images/common/no_image.gif');
+			$w = 160;
+			$h = 160;
+			
+			return array($path, $w, $h);
+		}
+		
+		list($w, $h) = getimagesize(doc_root($filename));
+		$path = root_url($filename);
 	} else {
-		list($w, $h) = getimagesize(doc_root("/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}"));
-		$path = root_url("/images/{$user_id}/illustrations/thumb/{$resource['filename_thumb']}");
+		$filename = "/images/{$resource['user_id']}/illustrations/thumb/{$resource['filename_thumb']}";
+		if (! file_exists(doc_root($filename))) {
+			$path = root_url('/images/common/no_image.gif');
+			$w = 160;
+			$h = 160;
+			
+			return array($path, $w, $h);
+		}
+		
+		list($w, $h) = getimagesize(doc_root($filename));
+		$path = root_url($filename);
 	}
 	
 	if ($mode === 'row') {
@@ -133,13 +185,23 @@ function image_thumb($resource, $user_id, $mode = 'row') {
 	}
 }
 
-function images($resource, $user_id, $count) {
+function images($resource, $count) {
 	$paths = array();
 	for ($i=0; $i<$count; $i++) {
 		if (! $resource[$i]['filename_thumb']) {
-			$paths[] = root_url("/images/{$user_id}/illustrations/original/{$resource[$i]['filename']}");
+			$filename = "/images/{$resource[$i]['user_id']}/illustrations/original/{$resource[$i]['filename']}";
+			if (! file_exists(doc_root($filename))) {
+				$paths[] = root_url('/images/common/no_image.gif');
+			} else {
+				$paths[] = root_url($filename);
+			}
 		} else {
-			$paths[] = root_url("/images/{$user_id}/illustrations/thumb/{$resource[$i]['filename_thumb']}");
+			$filename = "/images/{$resource[$i]['user_id']}/illustrations/thumb/{$resource[$i]['filename_thumb']}";
+			if (! file_exists(doc_root($filename))) {
+				$paths[] = root_url('/images/common/no_image.gif');
+			} else {
+				$paths[] = root_url($filename);
+			}
 		}
 	}
 	

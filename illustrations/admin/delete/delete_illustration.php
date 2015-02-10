@@ -6,6 +6,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/IllustrationsModel.php'));
 
+// ▼ ログインしていなければログインページへリダイレクト
+redirect_login_index($user);
+
 
 try {
 	// ▼ URLパラメータをチェック　イラストIDを取得
@@ -15,9 +18,9 @@ try {
 	$id = (int)$_GET['id'];
 	
 	$model = new IllustrationsModel($dsn, $db_user, $db_password);
-	$model->Delete($id, $user_id);
+	$model->Delete($id, $user['id']);
+	
+	redirect('/illustrations/admin/admin_index.php');
 } catch (GetParamErrorException $e) {
-	redirect('/illustrations/admin/index.php');
+	redirect('/illustrations/admin/admin_index.php');
 }
-
-redirect('/illustrations/admin/index.php');

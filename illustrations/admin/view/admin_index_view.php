@@ -12,27 +12,26 @@
 				<span>メニュー</span>
 			</div>
 			<div class="col col-md-10">
+				<h1><?php echo h($user['name']); ?>さんのイラスト一覧です。</h1>
+				<hr>
 				<table class="table table-striped">
 					<thead>
 						<th>ID</th>
 						<th>イラスト</th>
 						<th>タイトル</th>
 						<th>価格</th>
-						<th>登録日時</th>
-						<th>ユーザー</th>
+						<th>登録日</th>
 						<th>編集</th>
 						<th>削除</th>
 					</thead>
 					<tbody>
-						<caption>一覧</caption>
 						<?php for ($i=0; $i<$count; $i++): ?>
 						<tr>
 							<td><?php echo h($rec[$i]['id']); ?></td>
-							<td><img src="<?php echo h($images[$i])?>"></td>
-							<td><?php echo h($rec[$i]['title']); ?></td>
-							<td><?php echo h($rec[$i]['price']); ?></td>
+							<td><a href="<?php echo h(root_url('/illustrations/show_illustration.php?id=' . $rec[$i]['id'])); ?>"><img src="<?php echo h($images[$i])?>"></a></td>
+							<td><a href="<?php echo h(root_url('/illustrations/show_illustration.php?id=' . $rec[$i]['id'])); ?>"><?php echo h($rec[$i]['title']); ?></a></td>
+							<td><?php echo h($rec[$i]['price']); ?>円</td>
 							<td><?php echo h($rec[$i]['created_at']); ?></td>
-							<td><?php echo h($rec[$i]['user_id']); ?></td>
 							<td><a href="<?php echo h(root_url('/illustrations/admin/update_illustration.php?id=' . $rec[$i]['id'])); ?>">編集</a></td>
 							<td><a href="<?php echo h(root_url('/illustrations/admin/delete/delete_illustration.php?id=' . $rec[$i]['id'])); ?>">削除</a></td>
 						</tr>

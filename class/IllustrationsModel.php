@@ -62,7 +62,7 @@ class IllustrationsModel extends DbManager
 	{
 		$sql = 'SELECT * FROM illustrations WHERE user_id = :user_id ORDER BY id DESC';
 		$stmt = $this->dbh->prepare($sql);
-		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT); // セッションからとりたい
+		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 		$stmt->execute();
 		
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -110,18 +110,19 @@ class IllustrationsModel extends DbManager
 		return $this->last_insert_id;
 	}
 	
-	public function update ($posts)
+	public function update ($posts, $user_id)
 	{
 		try {
 			$this->dbh->beginTransaction();
 
 			$sql = 'UPDATE illustrations 
 						SET title = :title, price = :price 
-					WHERE id = :id';
+					WHERE id = :id AND user_id = :user_id';
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->bindValue(':title', $posts['title'], PDO::PARAM_STR);
 			$stmt->bindValue(':price', (int)$posts['price'], PDO::PARAM_INT);
 			$stmt->bindValue(':id', (int)$posts['id'], PDO::PARAM_INT);
+			$stmt->bindValue(':user_id', (int)$user_id, PDO::PARAM_INT);
 			$stmt->execute();
 			$count = $stmt->rowCount();
 			if (! $count) {
@@ -147,7 +148,7 @@ class IllustrationsModel extends DbManager
 			$sql = 'DELETE FROM illustrations WHERE id = :id AND user_id = :user_id';
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
-			$stmt->bindValue(':user_id', (int)$user_id, PDO::PARAM_INT); // セッションからとりたい
+			$stmt->bindValue(':user_id', (int)$user_id, PDO::PARAM_INT);
 			$stmt->execute();
 			$count = $stmt->rowCount();
 			if (! $count) {
