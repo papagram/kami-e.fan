@@ -144,7 +144,7 @@ class IllustrationsModel extends DbManager
 	{
 		try {
 			$this->dbh->beginTransaction();
-		
+			
 			$sql = 'DELETE FROM illustrations WHERE id = :id AND user_id = :user_id';
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
@@ -154,7 +154,7 @@ class IllustrationsModel extends DbManager
 			if (! $count) {
 				throw new PDOException('');
 			}
-				
+			
 			$this->dbh->commit();
 		} catch (PDOException $e) {
 			$this->dbh->rollBack();
