@@ -5,6 +5,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/UsersModel.php'));
+// require_once(doc_root('/vendor/autoload.php')); // windowsでやる時（php5.4）はコメントアウトを外す
 
 try {
 

@@ -1,5 +1,8 @@
 /_base/*
 /test/*
 /images/*
+/vendor/*
 /zzz_not/*
 /config/db_config.php
+composer.json
+composer.lock
