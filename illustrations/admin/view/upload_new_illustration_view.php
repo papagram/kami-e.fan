@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col col-md-2">
-				<span>メニュー</span>
+				<?php require_once (doc_root('/common_html/left_nav.php')); ?>
 			</div>
 			<div class="col col-md-10">
 				<div>

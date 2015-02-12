@@ -9,10 +9,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col col-md-2">
-				<span>メニュー</span>
-				<ul>
-					<li><a href="<?php echo h(root_url('/illustrations/admin/admin_index.php')); ?>">イラスト一覧</a></li>
-				</ul>
+				<?php require_once (doc_root('/common_html/left_nav.php')); ?>
 			</div>
 			<div class="col col-md-10">
 				<h1>こんにちは！<?php echo h($user['name']); ?>さん</h1>
