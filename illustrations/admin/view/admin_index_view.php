@@ -12,6 +12,8 @@
 				<?php require_once (doc_root('/common_html/left_nav.php')); ?>
 			</div>
 			<div class="col col-md-10">
+				<?php if ($count > 0): ?>
+				
 				<h1><?php echo h($user['name']); ?>さんのイラスト一覧です。</h1>
 				<hr>
 				<table class="table table-striped">
@@ -38,6 +40,12 @@
 						<?php endfor; ?>
 					</tbody>
 				</table>
+				
+				<?php else: ?>
+				
+				<p>イラストはまだ投稿されておりません。</p>
+				
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
