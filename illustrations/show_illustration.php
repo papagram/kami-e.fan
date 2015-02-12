@@ -28,7 +28,7 @@ try {
 	
 	
 	// ▼ ページタイトルは必ず定義
-	$page_title = h($rec['title']) . ' | ' . h($rec['user_id']) . 'さんのイラスト';
+	$page_title = h($rec['title']) . ' | ' . h($rec['name']) . 'さんのイラスト';
 	
 	// ▼ viewファイル呼び出し
 	require (doc_root('/illustrations/view/show_illustration_view.php'));

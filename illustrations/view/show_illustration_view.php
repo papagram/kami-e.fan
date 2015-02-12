@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			<div class="col col-md-2">
-				出品者： <?php echo h($rec['user_id']); ?>
+				出品者： <?php echo h($rec['name']); ?>
 			</div>
 		</div>
 	</div>

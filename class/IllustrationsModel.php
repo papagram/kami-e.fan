@@ -9,7 +9,20 @@ class IllustrationsModel extends DbManager
 
 	public function findById ($id)
 	{
-		$sql = 'SELECT * FROM illustrations WHERE id = :id';
+		$sql = 'SELECT i.id,
+					i.title,
+					i.price,
+					i.created_at,
+					i.user_id,
+					i.filename,
+					i.filename_thumb,
+					i.mime,
+					u.name,
+					u.email
+				FROM illustrations AS i 
+					JOIN users AS u 
+				ON i.user_id = u.id 
+					WHERE i.id = :id';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(':id', $id, PDO::PARAM_INT);
 		$stmt->execute();
