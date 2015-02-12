@@ -5,7 +5,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/UsersModel.php'));
-// require_once(doc_root('/vendor/autoload.php')); // windowsでやる時（php5.4）はコメントアウトを外す
+
+// ▼ PHPのバージョンが5.3か5.4の時はpassword_compatを読み込む
+$ver = phpversion();
+if (mb_strpos($ver, '5.3') === 0 || mb_strpos($ver, '5.4') === 0) {
+	require_once(doc_root('/vendor/autoload.php'));
+}
+
 
 try {
 
