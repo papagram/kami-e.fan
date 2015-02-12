@@ -13,6 +13,9 @@
 			<li>
 				<a href="<?php echo h(root_url('/users/user_index.php')); ?>"><?php echo h($user['name']); ?></a>
 			</li>
+			<li>
+				<a href="<?php echo h(root_url('/auth/logout_action.php')); ?>">logout</a>
+			</li>
 			<?php else: ?>
 			<li>
 				<a href="<?php echo h(root_url('/auth/login_index.php')); ?>">login</a>
