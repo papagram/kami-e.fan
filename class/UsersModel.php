@@ -68,6 +68,6 @@ class UsersModel extends DbManager
 		$stmt->execute();
 		$count = $stmt->fetchColumn();
 		
-		return ($count) ? true : false;
+		return ($count === '0') ? true : false;
 	}
 }
