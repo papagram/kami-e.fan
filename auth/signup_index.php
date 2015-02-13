@@ -10,14 +10,8 @@ require_once(doc_root('/config/constants.php'));
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/Controller.php'));
-require_once(doc_root('/class/auth/SignupAction.php'));
-
-// ▼ PHPのバージョンが5.3か5.4の時はpassword_compatを読み込む
-$ver = phpversion();
-if (mb_strpos($ver, '5.3') === 0 || mb_strpos($ver, '5.4') === 0) {
-	require_once(doc_root('/vendor/autoload.php'));
-}
+require_once(doc_root('/class/auth/SignupIndex.php'));
 
 // ▼ コントローラー呼び出し
 $controller = new Controller();
-$controller->run(new SignupAction($dsn, $db_user, $db_password));
+$controller->run(new SignupIndex());
