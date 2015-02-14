@@ -20,4 +20,4 @@ if (mb_strpos($ver, '5.3') === 0 || mb_strpos($ver, '5.4') === 0) {
 
 // ▼ コントローラー呼び出し
 $controller = new Controller();
-$controller->run(new SignupAction($dsn, $db_user, $db_password));
+$controller->execute(new SignupAction($dsn, $db_user, $db_password));

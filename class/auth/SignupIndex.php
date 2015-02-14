@@ -2,7 +2,7 @@
 
 class SignupIndex
 {
-	public function actionIndex()
+	public function execute()
 	{
 		// ▼ 変数初期化
 		$input_name = (isset($_SESSION['signup']['input_name'])) ? $_SESSION['signup']['input_name'] : '';

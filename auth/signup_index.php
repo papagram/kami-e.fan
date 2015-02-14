@@ -14,4 +14,4 @@ require_once(doc_root('/class/auth/SignupIndex.php'));
 
 // ▼ コントローラー呼び出し
 $controller = new Controller();
-$controller->run(new SignupIndex());
+$controller->execute(new SignupIndex());

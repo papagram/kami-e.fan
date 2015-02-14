@@ -6,10 +6,10 @@ require_once (doc_root('/class/exception/CsrfException.php'));
 
 class Controller
 {
-	public function run($obj)
+	public function execute($obj)
 	{
 		try {
-			$obj->actionIndex();
+			$obj->execute();
 		} catch (AlreadyExistsException $e) {
 			echo h($e->getMessage());
 			exit;

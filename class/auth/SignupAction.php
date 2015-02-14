@@ -17,7 +17,7 @@ class SignupAction
 		$this->db_password = $db_password;
 	}
 	
-	public function actionIndex()
+	public function execute()
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
