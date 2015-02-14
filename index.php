@@ -1,21 +1,17 @@
 <?php
 
+// ▼ セッションを開始
+session_start();
+session_regenerate_id(true);
+
 // ▼ 共通設定ファイルを読み込む
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
+require_once(doc_root('/config/constants.php'));
 
 // ▼ classファイルを読み込む
-require_once(doc_root('/class/IllustrationsModel.php'));
+require_once(doc_root('/class/Controller.php'));
+require_once(doc_root('/class/Index.php'));
 
-
-$model = new IllustrationsModel($dsn, $db_user, $db_password);
-$rec = $model->findLimit(); // 新着イラスト一を$limitの数だけselect 降順
-$count = count($rec); // 取得件数
-
-$images = images($rec, $count); // 画像ファイルのパスを返す
-
-
-// ▼ ページタイトルは必ず定義
-$page_title = BRAND_NAME . 'へようこそ！'; 
-
-// ▼ viewファイル呼び出し
-require_once (doc_root('/view/index_view.php'));
+// ▼ コントローラー呼び出し
+$controller = new Controller();
+$controller->execute(new Index($dsn, $db_user, $db_password));
