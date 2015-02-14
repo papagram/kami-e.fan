@@ -20,6 +20,9 @@
 			<li>
 				<a href="<?php echo h(root_url('/auth/login_index.php')); ?>">login</a>
 			</li>
+			<li>
+				<a href="<?php echo h(root_url('/auth/signup_index.php')); ?>">signup</a>
+			</li>
 			<?php endif; ?>
 		</ul>
 	</div>
