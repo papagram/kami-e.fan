@@ -1,17 +1,17 @@
 <?php
 
+// ▼ セッションを開始
+session_start();
+session_regenerate_id(true);
+
 // ▼ 共通設定ファイルを読み込む
-// ▼ ここでセッションを開始している
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
+require_once(doc_root('/config/constants.php'));
 
-// ▼ セッションを破棄
-$_SESSION = array();
+// ▼ classファイルを読み込む
+require_once(doc_root('/class/Controller.php'));
+require_once(doc_root('/class/auth/LogoutAction.php'));
 
-if (isset($_COOKIE[session_name()]))
-{
-	setcookie(session_name(),'',time()-3600,'/');
-}
-
-session_destroy();
-
-redirect();
+// ▼ コントローラー呼び出し
+$controller = new Controller();
+$controller->execute(new LogoutAction());

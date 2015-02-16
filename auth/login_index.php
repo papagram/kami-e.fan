@@ -1,18 +1,17 @@
 <?php
 
+// ▼ セッションを開始
+session_start();
+session_regenerate_id(true);
+
 // ▼ 共通設定ファイルを読み込む
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
+require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
+require_once(doc_root('/config/constants.php'));
 
-// ▼ 変数初期化
-$input_email = (isset($_SESSION['login']['input_email'])) ? $_SESSION['login']['input_email'] : '';
-$err_msg = (isset($_SESSION['login']['err_msg'])) ? $_SESSION['login']['err_msg'] : array();
-unset($_SESSION['login']);
+// ▼ classファイルを読み込む
+require_once(doc_root('/class/Controller.php'));
+require_once(doc_root('/class/auth/LoginIndex.php'));
 
-// ▼ tokenをセット
-$token = set_token();
-
-// ▼ ページタイトルは必ず定義
-$page_title = 'ログイン'; 
-
-// ▼ viewファイル呼び出し
-require_once (doc_root('/auth/view/login_index_view.php'));
+// ▼ コントローラー呼び出し
+$controller = new Controller();
+$controller->execute(new LoginIndex());
