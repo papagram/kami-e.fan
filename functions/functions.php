@@ -73,6 +73,21 @@ function crypt_password($row_password) {
 }
 
 /**
+* ▼ パスワードの形式をチェック
+*/
+function is_match_pattern_password($password) {
+	// ▼ パスワードは8文字以上、12文字以下 英数字使用必須
+	if (preg_match('/[^A-Za-z0-9]/', $password) === 1 // 英数字以外が含まれていてはいけない
+		|| preg_match('/^[A-Za-z0-9]{8,}/', $password) === 0 // 先頭文字から8回以上英数字が繰り返されなければならない
+		|| preg_match('/^[A-Za-z0-9]{13,}/', $password) === 1 // 先頭文字から13回以上英数字が繰り返されてはいけない
+		|| preg_match('/([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/', $password) === 0 // 英数字が含まなければいけない
+	){
+		return false;
+	}
+	return true;
+}
+
+/**
 * ▼ セッションのユーザー情報を代入
 */
 function set_user() {
