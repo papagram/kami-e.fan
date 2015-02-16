@@ -55,7 +55,7 @@ function set_token() {
 
 function check_token($token) {
 	$key = array_search($token, $_SESSION['tokens'], true);
-	if (! $key)
+	if ($key === false)
 	{
 		throw new CsrfException('tokenが不正だよ！');
 	}
