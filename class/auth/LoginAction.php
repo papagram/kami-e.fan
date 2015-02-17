@@ -5,16 +5,11 @@ require_once(doc_root('/class/UsersModel.php'));
 
 class LoginAction
 {
-	private $dsn = '';
-	private $db_user = '';
-	private $db_password = '';
-	
+	private $model = null;
 	
 	public function __construct($dsn, $db_user, $db_password)
 	{
-		$this->dsn = $dsn;
-		$this->db_user = $db_user;
-		$this->db_password = $db_password;
+		$this->model = new UsersModel($dsn, $db_user, $db_password);
 	}
 	
 	public function execute()
@@ -48,8 +43,7 @@ class LoginAction
 			}
 			
 			// ▼ POSTで渡されたEmailをキーにユーザーを検索
-			$model = new UsersModel($this->dsn, $this->db_user, $this->db_password);
-			$user = $model->findUserByEmail($posts['email']);
+			$user = $this->model->findUserByEmail($posts['email']);
 			
 			// ▼ POSTで渡されたパスワードを照合
 			if (! password_verify($posts['password'], $user['password'])) {

@@ -5,16 +5,11 @@ require_once(doc_root('/class/UsersModel.php'));
 
 class SignupAction
 {
-	private $dsn = '';
-	private $db_user = '';
-	private $db_password = '';
-	
+	private $model = null;
 	
 	public function __construct($dsn, $db_user, $db_password)
 	{
-		$this->dsn = $dsn;
-		$this->db_user = $db_user;
-		$this->db_password = $db_password;
+		$this->model = new UsersModel($dsn, $db_user, $db_password);
 	}
 	
 	public function execute()
@@ -58,8 +53,7 @@ class SignupAction
 			}
 			
 			// ▼ POSTで渡されたEmailが登録済みか確認
-			$model = new UsersModel($this->dsn, $this->db_user, $this->db_password);
-			$res = $model->exsistEmail($posts['email']);
+			$res = $this->model->exsistEmail($posts['email']);
 			if (! $res) {
 				throw new AlreadyExistsException('このメールアドレスはすでに登録されています。');
 			}
@@ -76,7 +70,7 @@ class SignupAction
 			$activation_key = md5(uniqid(mt_rand(), true));
 			
 			// ▼ ユーザーを登録
-			$model->registUser($posts['name'], $posts['email'], $hash_password, $regist_flg, $activation_key);
+			$this->model->registUser($posts['name'], $posts['email'], $hash_password, $regist_flg, $activation_key);
 
 			// ▼ ログイン画面へリダイレクト
 			redirect('/auth/login_index.php?');
