@@ -97,9 +97,9 @@ function set_user() {
 /**
 * ▼ $userがfalseならばログインページへリダイレクト
 */
-function redirect_login_index($user) {
+function is_authenticated($user) {
 	if (! $user) {
-		redirect('/auth/login_index.php');
+		throw new UserAuthenticatedException('');
 	}
 }
 
