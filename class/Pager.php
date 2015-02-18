@@ -14,17 +14,27 @@ class Pager
 	public function __construct ($count_max)
 	{
 		// ▼ 最終ページを取得
-		$this->last_page = ($count_max % $this->per_page === (int)0) ? $count_max / $this->per_page : floor($count_max / $this->per_page + 1);
+		$this->last_page = ($count_max % $this->per_page === (int)0) ? $count_max / $this->per_page : intval(floor($count_max / $this->per_page + 1));
 		
 		// ▼ URLパラメータをチェック 現在ページを特定 パラメータ無しは1ページ目とする
 		if (isset($_GET['page'])) {
-			if (ctype_digit($_GET['page']) && $_GET['page'] <= $this->last_page && $_GET['page'] > (int)0) {
+			if (! ctype_digit($_GET['page'])) {
+				throw new IllegalAccessException('GETの値が不正です。');
+			}
+			
+			if($_GET['page'] <= $this->last_page && $_GET['page'] > (int)0) {
 				$this->current_page = (int)$_GET['page'];
-			} else {
-				throw new GetParamErrorException('');
+			}
+			
+			if ($this->last_page < $_GET['page']) {
+				$this->current_page = $this->last_page;
+			}
+			
+			if ($_GET['page'] === '0') {
+				$this->current_page = $this->first_page;
 			}
 		} else {
-			$this->current_page = 1;
+			$this->current_page = $this->first_page;
 		}
 		
 		// ▼ select時にoffsetする数を計算
@@ -32,7 +42,7 @@ class Pager
 		
 		// ▼ 前ページと次ページを計算
 		$this->prev = ($this->current_page !== $this->first_page) ? $this->current_page - 1 : $this->first_page;
-		$this->next = ($this->current_page !== $this->last_page) ? $this->current_page + 1 : $this->last_page;
+		$this->next = ($this->current_page === $this->last_page) ?  $this->last_page : $this->current_page + 1;
 	}
 	
 	public function getPerPage ()
