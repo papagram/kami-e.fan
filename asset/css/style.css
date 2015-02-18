@@ -18,3 +18,25 @@
 	color: #000000;
 	fontweight: normal;
 }
+
+.display {
+	width: 500px;
+	height: 500px;
+	background-color: #FFFFFF;
+	text-align: center;
+	display: table-cell;
+}
+
+.thumb {
+	width: 200px;
+	height: 200px;
+	background-color: #FFFFFF;
+	border: solid #D3D3D3 1px;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.image-list-padding {
+	padding-left: 25px;
+}

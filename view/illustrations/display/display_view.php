@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col col-md-5">
-				<div>
+				<div class="display">
 					<img src="<?php echo $image[0]; ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 					<div class="panel-body">
 						<p>名　前： <?php echo h($rec['name']); ?></p>
 						<p>メール： <?php echo h($rec['email']); ?></p>
-						<p>このイラストが欲しいという方は上記のアドレスにメールして下さい。</p>
+						<p>購入希望、イラストに関する質問等は上記のアドレスまでお問い合わせ下さい。</p>
 					</div>
 				</div>
 			</div>
