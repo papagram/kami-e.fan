@@ -9,7 +9,7 @@
 	<div class="panel-heading">メニュー</div>
 	<div class="panel-body">
 		<ul>
-			<li><a href="<?php echo h(root_url('/illustrations/admin/admin_index.php')); ?>">イラスト一覧を見る</a></li>
+			<li><a href="<?php echo h(root_url('/illustrations/admin/admin_index.php')); ?>">イラスト一覧</a></li>
 			<li><a href="<?php echo h(root_url('/illustrations/admin/upload_index.php')); ?>">アップロード</a></li>
 		</ul>
 	</div>
