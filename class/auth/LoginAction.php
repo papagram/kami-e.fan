@@ -22,16 +22,17 @@ class LoginAction
 			// ▼ CSRF対策　tokenををチェック
 			check_token($posts['token']);
 			
-			$_SESSION['login']['flg'] = true;
+			$flg = true;
 			$_SESSION['login']['err_msg'] = array();
 			$_SESSION['login']['input_email'] = '';
+			$_SESSION['redirect'] = '/auth/login_index.php';
 			
 			// ▼ 入力値チェック　Email
 			$posts['email'] = mb_ereg_replace('\A(\s)+|(\s)+\z', '', $posts['email']); // 前後のスペースは削除
 			$email_max_len = 50;
 			$len = mb_strlen($posts['email']); // 文字数取得
 			if (! $len || $len > $email_max_len) {
-				throw new InvalidValueException('ログインに失敗しました。');
+				$flg = false;
 			}
 			
 			// ▼ 入力値チェック　パスワード
@@ -39,7 +40,7 @@ class LoginAction
 			$password_max_len = 100;
 			$len = mb_strlen($posts['password']); // 文字数取得
 			if (! $len || $len > $password_max_len) {
-				throw new InvalidValueException('ログインに失敗しました。');
+				$flg = false;
 			}
 			
 			// ▼ POSTで渡されたEmailをキーにユーザーを検索
@@ -47,7 +48,14 @@ class LoginAction
 			
 			// ▼ POSTで渡されたパスワードを照合
 			if (! password_verify($posts['password'], $user['password'])) {
-				throw new UserNotFoundException('ログインに失敗しました。');
+				$flg = false;
+			}
+			
+			// ▼ バリデート結果
+			if (! $flg) {
+				$_SESSION['login']['err_msg'][] = 'ログインに失敗しました';
+				$_SESSION['login']['input_email'] = $_POST['email'];
+				throw new InvalidValueException('');
 			}
 			
 			// ▼ ユーザー情報をセッションに格納　マイページへリダイレクト

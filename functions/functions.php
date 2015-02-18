@@ -57,7 +57,7 @@ function check_token($token) {
 	$key = array_search($token, $_SESSION['tokens'], true);
 	if ($key === false)
 	{
-		throw new CsrfException('tokenが不正だよ！');
+		throw new CsrfException('エラーが発生しました。もう一度やり直して下さい。');
 	}
 	else
 	{
@@ -104,11 +104,21 @@ function is_authenticated($user) {
 }
 
 /**
-* ▼ // ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
+* ▼ セッションからリダイレクト先を取得
+*/
+function get_redirect_to() {
+	$redirect = $_SESSION['redirect'];
+	unset($_SESSION['redirect']);
+	
+	return $redirect;
+}
+
+/**
+* ▼  絞り込んだuser_idとセッションのuser_idが一致しなければエラー
 */
 function is_match_user_id($user_id_db, $user_id_session) {
 	if ($user_id_db !== $user_id_session) {
-		throw new IllegalUserException('ユーザーが一致しません。');
+		throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
 	}
 }
 
@@ -154,8 +164,8 @@ function image_original($resource, $mode = 'row') {
 	if ($mode === 'row') {
 		return array($path, $w, $h);
 	} elseif ($mode === 'middle') {
-		$max_w = 940;
-		$max_h = 940;
+		$max_w = 450;
+		$max_h = 450;
 		list($new_w, $new_h) = get_new_thumb_size($w, $h, $max_w, $max_h);
 		
 		return array($path, $new_w, $new_h);

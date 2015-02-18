@@ -8,9 +8,14 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col col-md-12">
+			<div class="col col-md-3">
+				<?php require_once (doc_root('/view/layout/left_nav.php')); ?>
+			</div>
+			<div class="col col-md-9">
+				<h1>こんにちは！<?php echo h($user['name']); ?>さん</h1>
+				<hr>
 				<div class="panel panel-default">
-					<div class="panel-heading">New Arrival</div>
+					<div class="panel-heading">最近の出品リスト</div>
 					<div class="panel-body">
 						<ul class="list-inline">
 							<?php for ($i=0; $i<$count; $i++): ?>
@@ -21,9 +26,6 @@
 							</li>
 							<?php endfor; ?>
 						</ul>
-						<div>
-							<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php')); ?>">more</a>
-						</div>
 					</div>
 				</div>
 			</div>

@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php require_once (doc_root('/common_html/head.php')); ?>
+<?php require_once (doc_root('/view/layout/head.php')); ?>
 
 <body>
-	<?php require_once (doc_root('/common_html/header.php')); ?>
+	<?php require_once (doc_root('/view/layout/header.php')); ?>
 
 	<div class="container">
 		<div class="row">
-			<div class="col col-md-2">
-				<span>メニュー</span>
-			</div>
-			<div class="col col-md-10">
+			<div class="col col-md-12">
 				<form action="<?php echo h(root_url('/auth/login_action.php')); ?>" method="post" class="form-horizontal">
 					<fieldset>
 						<legend>Login</legend>
@@ -36,7 +33,7 @@
 		</div>
 	</div>
 
-	<?php require_once (doc_root('/common_html/footer.php')); ?>
+	<?php require_once (doc_root('/view/layout/footer.php')); ?>
 
 </body>
 </html>

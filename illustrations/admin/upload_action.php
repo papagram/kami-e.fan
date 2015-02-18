@@ -10,8 +10,8 @@ require_once(doc_root('/config/constants.php'));
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/Controller.php'));
-require_once(doc_root('/class/users/UserIndex.php'));
+require_once(doc_root('/class/illustrations/UploadAction.php'));
 
 // ▼ コントローラー呼び出し
 $controller = new Controller();
-$controller->execute(new UserIndex($dsn, $db_user, $db_password));
+$controller->execute(new UploadAction($dsn, $db_user, $db_password));

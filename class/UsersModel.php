@@ -13,18 +13,12 @@ class UsersModel extends DbManager
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(':email', $email, PDO::PARAM_STR);
 		$stmt->execute();
-		$user = $stmt->fetch(PDO::FETCH_ASSOC);
-		if (! $user) {
-			throw new UserNotFoundException('ログインに失敗しました。');
-		}
 		
-		return $user;
+		return $stmt->fetch(PDO::FETCH_ASSOC);;
 	}
 	
 	public function registUser ($name, $email, $password, $regist_flg, $activation_key)
 	{
-		$this->dbh->beginTransaction();
-	
 		$sql = 'INSERT INTO users 
 					(name,
 						email,
@@ -47,12 +41,10 @@ class UsersModel extends DbManager
 		$stmt->execute();
 		$count = $stmt->rowCount();
 		if (! $count) {
-			$this->dbh->rollBack();
-			throw new PDOException('DB ERROR:もう一度やり直して下さい。');
+			return false;
 		}
 		
 		$this->last_insert_id = $this->dbh->lastInsertId();
-		$this->dbh->commit();
 	}
 
 	public function getLastInsertId ()

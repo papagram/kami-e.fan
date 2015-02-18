@@ -22,7 +22,19 @@
 							<?php endfor; ?>
 						</ul>
 						<div>
-							<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php')); ?>">more</a>
+							<ul class="pagination pagination-sm">
+								<li>
+									<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php?page=' . $pager->getPrev())); ?>">&laquo;</a>
+								</li>
+								<?php for ($i=$pager->getFirstPage(); $i<=$pager->getLastPage(); $i++): ?>
+									<li class="<?php echo ($pager->getCurrentPage() === $i) ? h($pager->getActive()) : ''; ?>">
+										<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php?page=' . $i)); ?>"><?php echo h($i); ?></a>
+									</li>
+								<?php endfor; ?>
+								<li>
+									<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php?page=' . $pager->getNext())); ?>">&raquo;</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>

@@ -4,6 +4,10 @@
 	padding-bottom: 15px;
 }
 
+.panel-width {
+	width: 380px;
+}
+
 .required {
 	color: #FF0000;
 	font-size: 80%;
