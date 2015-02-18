@@ -106,9 +106,9 @@ function is_authenticated($user) {
 /**
 * ▼ // ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
 */
-function match_user_id($user_id_db, $user_id_session) {
+function is_match_user_id($user_id_db, $user_id_session) {
 	if ($user_id_db !== $user_id_session) {
-		redirect('/users/user_index.php');
+		throw new IllegalUserException('ユーザーが一致しません。');
 	}
 }
 
