@@ -2,7 +2,7 @@
 
 class Pager
 {
-	private $per_page = 5; // 1ページ当たりの表示件数
+	private $per_page = 25; // 1ページ当たりの表示件数
 	private $first_page = 1;
 	private $last_page = 0;
 	private $current_page = 0;
