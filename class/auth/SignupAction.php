@@ -90,9 +90,11 @@ class SignupAction
 				$_SESSION['signup']['err_msg'][] = 'エラーが発生しました。もう一度やり直して下さい。';
 				throw new DbException('');
 			}
+			
+			$_SESSION['signup_success'] = $res;
 
-			// ▼ ログイン画面へリダイレクト
-			redirect('/auth/login_index.php?');
+			// ▼ 内容確認画面へリダイレクト
+			redirect('/auth/signup_success.php?');
 		} else {
 			throw new IllegalPostAccessException('不正なアクセスが行われました。');
 		}
