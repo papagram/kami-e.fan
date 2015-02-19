@@ -19,20 +19,24 @@
 				<div class="list-group">
 					<?php for ($i=0; $i<$count; $i++): ?>
 					<div class="list-group-item">
-						<div><a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>">
-							<img src="<?php echo h($images[$i])?>">
-						</a></div>
-						<div>
-							<ul class="list-unstyled">
-								<li>ID: <?php echo h($rec[$i]['id']); ?></li>
-								<li>Title: <a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>"><?php echo h($rec[$i]['title']); ?></a></li>
-								<li>Price: <?php echo h($rec[$i]['price']); ?>円</li>
-								<li>Date: <?php echo h($rec[$i]['created_at']); ?></li>
-							</ul>
-						</div>
-						<div>
-							<a href="<?php echo h(root_url('/illustrations/admin/update_index.php?id=' . $rec[$i]['id'])); ?>">編集</a>
-							<a href="<?php echo h(root_url('/illustrations/admin/delete_action.php?id=' . $rec[$i]['id'])); ?>">削除</a>
+						<div class="admin-list-box">
+							<div class="admin-list-image thumb">
+								<a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>">
+									<img src="<?php echo h($images[$i])?>">
+								</a>
+							</div>
+							<div class="admin-list-text">
+								<ul class="list-unstyled">
+									<li>ID: <?php echo h($rec[$i]['id']); ?></li>
+									<li>Title: <a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>"><?php echo h($rec[$i]['title']); ?></a></li>
+									<li>Price: <?php echo h($rec[$i]['price']); ?>円</li>
+									<li>Date: <?php echo h($rec[$i]['created_at']); ?></li>
+									<li>
+										<a href="<?php echo h(root_url('/illustrations/admin/update_index.php?id=' . $rec[$i]['id'])); ?>">編集</a>
+										<a href="<?php echo h(root_url('/illustrations/admin/delete_action.php?id=' . $rec[$i]['id'])); ?>">削除</a>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<?php endfor; ?>

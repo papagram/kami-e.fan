@@ -158,7 +158,7 @@ class UploadAction
 			}
 			
 			// ▼ イラスト情報をDBへインサート
-			$this->model->insert($user['id'], $original, $thumb, $finfotype);
+			$res = $this->model->insert($user['id'], $original, $thumb, $finfotype);
 			if (! $res) {
 				$_SESSION['upload_action']['err_msg'][] = '画像のアップロードに失敗しました。もう一度やり直して下さい。';
 				throw new DbException('');

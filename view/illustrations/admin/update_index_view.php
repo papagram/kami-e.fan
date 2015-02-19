@@ -16,7 +16,9 @@
 					<form action="<?php echo h(root_url('/illustrations/admin/update_action.php')); ?>" method="post" class="form-horizontal">
 						<fieldset>
 							<legend>編集</legend>
-							<img src="<?php echo h($image[0]); ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
+							<div class="thumb">
+								<img src="<?php echo h($image[0]); ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
+							</div>
 							<div class="form-group">
 								<label for="title">タイトル</label>
 								<input id="title" type="text" name="title" value="<?php echo h($input_title); ?>" class="form-control">

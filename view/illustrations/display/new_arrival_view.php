@@ -12,13 +12,18 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">New Arrival</div>
 					<div class="panel-body">
-						<ul class="list-inline image-list-padding">
+						<ul class="list-inline">
 							<?php for ($i=0; $i<$count; $i++): ?>
-							<li>
-								<div class="thumb">
-									<a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>">
-										<img src="<?php echo h($images[$i]); ?>">
-									</a>
+							<li class="li-padding">
+								<div class="thumb-box">
+									<div class="thumb">
+										<a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>">
+											<img src="<?php echo h($images[$i]); ?>">
+										</a>
+									</div>
+									<div class="thumb-name">
+										<p><?php echo h($rec[$i]['name']); ?></p>
+									</div>
 								</div>
 							</li>
 							<?php endfor; ?>

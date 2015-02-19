@@ -27,16 +27,42 @@
 	display: table-cell;
 }
 
-.thumb {
-	width: 200px;
+.thumb-box {
+	width: 170px;
 	height: 200px;
 	background-color: #FFFFFF;
 	border: solid #D3D3D3 1px;
+}
+
+.thumb {
+	width: 170px;
+	height: 170px;
+	background-color: #FFFFFF;
 	text-align: center;
 	vertical-align: middle;
 	display: table-cell;
 }
 
-.image-list-padding {
-	padding-left: 25px;
+.thumb-name {
+	width: 170px;
+	height: 20px;
+	text-align: center;
+	word-break: break-all;
+}
+
+.li-padding {
+	padding-top: 10px;
+}
+
+.admin-list-box {
+	display: table;
+}
+
+.admin-list-image {
+	display: table-cell;
+}
+
+.admin-list-text {
+	display: table-cell;
+	padding-left: 30px;
 }
