@@ -49,8 +49,21 @@ class IllustrationsModel extends DbManager
 	 */
 	public function findByPerPage ($per_page, $offset)
 	{
-		$sql = 'SELECT * FROM illustrations ORDER BY id DESC 
-					LIMIT :per_page OFFSET :offset';
+		$sql = 'SELECT i.id,
+					i.title,
+					i.price,
+					i.created_at,
+					i.user_id,
+					i.filename,
+					i.filename_thumb,
+					i.mime,
+					u.name,
+					u.email
+				FROM illustrations AS i 
+					JOIN users AS u 
+				ON i.user_id = u.id 
+					ORDER BY id DESC 
+				LIMIT :per_page OFFSET :offset';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(':per_page', $per_page, PDO::PARAM_INT);
 		$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -61,9 +74,24 @@ class IllustrationsModel extends DbManager
 	
 	public function findLimit ()
 	{
-		$limit = 5;
+		$limit = 10;
 		
 		$sql = 'SELECT * FROM illustrations ORDER BY id DESC limit :limit';
+		$sql = 'SELECT i.id,
+					i.title,
+					i.price,
+					i.created_at,
+					i.user_id,
+					i.filename,
+					i.filename_thumb,
+					i.mime,
+					u.name,
+					u.email
+				FROM illustrations AS i 
+					JOIN users AS u 
+				ON i.user_id = u.id 
+					ORDER BY id DESC 
+				LIMIT :limit';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 		$stmt->execute();
@@ -106,6 +134,8 @@ class IllustrationsModel extends DbManager
 		}
 		 
 		$this->last_insert_id = $this->dbh->lastInsertId();
+		
+		return true;
 	}
 	
 	public function getLastInsertId ()
@@ -128,6 +158,7 @@ class IllustrationsModel extends DbManager
 		if (! $count) {
 			return false;
 		}
+		return true;
 	}
 	
 	public function delete ($id, $user_id)
@@ -141,5 +172,6 @@ class IllustrationsModel extends DbManager
 		if (! $count) {
 			return false;
 		}
+		return true;
 	}
 }
