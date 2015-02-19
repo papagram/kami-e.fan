@@ -5,8 +5,6 @@ require_once(doc_root('/class/DbManager.php'));
 
 class UsersModel extends DbManager
 {
-	private $last_insert_id = 0;
-
 	public function findUserByEmail ($email)
 	{
 		$sql = 'SELECT * FROM users WHERE email = :email';
@@ -44,12 +42,7 @@ class UsersModel extends DbManager
 			return false;
 		}
 		
-		$this->last_insert_id = $this->dbh->lastInsertId();
-	}
-
-	public function getLastInsertId ()
-	{
-		return $this->last_insert_id;
+		return array('id' => $this->dbh->lastInsertId(), 'name' => $name, 'email' => $email);
 	}
 	
 	public function exsistEmail ($email)
