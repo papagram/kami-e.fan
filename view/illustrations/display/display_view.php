@@ -27,8 +27,8 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">出品者</div>
 					<div class="panel-body">
-						<p>名　前： <?php echo h($rec['name']); ?></p>
-						<p>メール： <?php echo h($rec['email']); ?></p>
+						<p><?php echo h($rec['name']); ?></p>
+						<p><?php echo h($rec['email']); ?></p>
 						<p>購入希望、イラストに関する質問等は上記のアドレスまでお問い合わせ下さい。</p>
 					</div>
 				</div>

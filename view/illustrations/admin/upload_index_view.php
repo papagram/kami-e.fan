@@ -11,7 +11,7 @@
 			<div class="col col-md-3">
 				<?php require_once (doc_root('/view/layout/left_nav.php')); ?>
 			</div>
-			<div class="col col-md-9">
+			<div class="col col-md-5">
 				<div>
 					<form action="<?php echo h(root_url('/illustrations/admin/upload_action.php')); ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
 						<legend>アップロード</legend>
@@ -25,10 +25,11 @@
 							<?php endforeach; ?>
 							<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo h($max_file_size); ?>">
 							<input type="hidden" value="<?php echo h($token); ?>" name="token">
-							<button type="submit" class="btn btn-primary btn-block" id="file-upload">upload</button>
+							<button type="submit" class="btn btn-primary" id="file-upload">アップロードする</button>
 						</fieldset>
 					</form>
 				</div>
+				<div class="col col-md-4"></div>
 			</div>
 		</div>
 	</div>

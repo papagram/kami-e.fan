@@ -35,9 +35,12 @@
 							</li>
 							<?php endfor; ?>
 						</ul>
+						
+						<?php if (10 < $count): ?>
 						<div class="pull-right">
 							<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php')); ?>">もっと見る</a>
 						</div>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
