@@ -114,15 +114,6 @@ function get_redirect_to() {
 }
 
 /**
-* ▼  絞り込んだuser_idとセッションのuser_idが一致しなければエラー
-*/
-function is_match_user_id($user_id_db, $user_id_session) {
-	if ($user_id_db !== $user_id_session) {
-		throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
-	}
-}
-
-/**
 * ▼ サムネイル用のサイズを取得
 */
 function get_new_thumb_size($w, $h, $max_w, $max_h) {

@@ -64,6 +64,14 @@ class UpdateAction
 				 throw new InvalidValueException('');
 			 }
 
+			// ▼ 更新対象のイラスト情報を取得
+			$rec = $this->model->findById($posts['id']);
+			
+			// ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
+			if ($rec['user_id'] !== $user['id']) {
+				throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
+			}
+			
 			// ▼ DBを更新
 			$res = $this->model->update($posts, $user['id']);
 			if (! $res) {

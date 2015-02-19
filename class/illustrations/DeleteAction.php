@@ -30,7 +30,9 @@ class DeleteAction
 		$rec = $this->model->findById($id);
 		
 		// ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
-		is_match_user_id($rec['user_id'], $user['id']);
+		if ($rec['user_id'] !== $user['id']) {
+			throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
+		}
 		
 		// ▼ レコードを削除
 		$res = $this->model->delete($id, $user['id']);
