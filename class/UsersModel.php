@@ -21,21 +21,15 @@ class UsersModel extends DbManager
 					(name,
 						email,
 						password,
-						regist_flg,
-						activation_key,
 						created_at) 
 				VALUES(:name,
 						:email,
 						:password,
-						:regist_flg,
-						:activation_key,
 						now())';
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue(':name', $name, PDO::PARAM_STR);
 		$stmt->bindValue(':email', $email, PDO::PARAM_STR);
 		$stmt->bindValue(':password', $password, PDO::PARAM_STR);
-		$stmt->bindValue(':regist_flg', $regist_flg, PDO::PARAM_INT);
-		$stmt->bindValue(':activation_key', $activation_key, PDO::PARAM_STR);
 		$stmt->execute();
 		$count = $stmt->rowCount();
 		if (! $count) {

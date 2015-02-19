@@ -81,8 +81,6 @@ class SignupAction
 			
 			// ▼ POSTで渡されたパスワードをハッシュ化
 			$hash_password = crypt_password($posts['password']);
-			$regist_flg = 0;
-			$activation_key = md5(uniqid(mt_rand(), true));
 			
 			// ▼ ユーザーを登録
 			$res = $this->model->registUser($posts['name'], $posts['email'], $hash_password, $regist_flg, $activation_key);
