@@ -136,7 +136,7 @@ class UploadAction
 										$new_w, $new_h,
 										$w, $h);
 					imagegif($dest, $thumb_move_to);
-				} elseif ($finfotype === 'image/jpeg' || $mime === 'image/pjpeg') {
+				} elseif ($finfotype === 'image/jpeg' || $finfotype === 'image/pjpeg') {
 					$src = imagecreatefromjpeg($move_to);
 					imagecopyresampled($dest, $src,
 										0, 0,
@@ -144,7 +144,7 @@ class UploadAction
 										$new_w, $new_h,
 										$w, $h);
 					imagejpeg($dest, $thumb_move_to);
-				} elseif ($finfotype === 'image/png' || $mime === 'image/x-png') {
+				} elseif ($finfotype === 'image/png' || $finfotype === 'image/x-png') {
 					$src = imagecreatefrompng($move_to);
 					imagecopyresampled($dest, $src,
 										0, 0,
