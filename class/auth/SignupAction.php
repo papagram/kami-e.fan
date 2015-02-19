@@ -61,14 +61,14 @@ class SignupAction
 			$res = $this->model->exsistEmail($posts['email']);
 			if (! $res) {
 				$flg = false;
-				$err_msg[] = 'このメールアドレスはすでに登録されています';
+				$err_msg[] = 'このメールアドレスは使用できません。';
 			}
 			
 			// ▼ 入力値チェック　Password
 			$posts['password'] = mb_ereg_replace('\A(\s)+|(\s)+\z', '', $posts['password']); // 前後のスペースは削除
 			if (! is_match_pattern_password($posts['password'])) {
 				$flg = false;
-				$err_msg[] = 'もう一度パスワードを設定して下さい';
+				$err_msg[] = 'パスワードは必ずアルファベットと数字の両方を用い、8文字以上、12文字以内で設定して下さい。';
 			}
 			
 			// ▼ バリデート結果
