@@ -31,7 +31,7 @@ class UpdateAction
 			$flg = true;
 			$_SESSION['update_illust']['err_msg'] = array();
 			$_SESSION['update_illust']['input_title'] = '';
-			$_SESSION['update_illust']['input_price'] = (int)0;
+			$_SESSION['update_illust']['input_price'] = 0;
 			$_SESSION['redirect'] = "/illustrations/admin/update_index.php?id={$posts['id']}";
 
 			 // ▼ 入力値チェック タイトル
