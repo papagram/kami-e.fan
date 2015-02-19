@@ -1,8 +1,8 @@
 <div class="panel panel-default">
-	<div class="panel-heading">ユーザー情報</div>
+	<div class="panel-heading">プロフィール</div>
 	<div class="panel-body">
-		<p>名　前： <?php echo h($user['name']); ?></p>
-		<p>メール： <?php echo h($user['email']); ?></p>
+		<p><?php echo h($user['name']); ?></p>
+		<p><?php echo h($user['email']); ?></p>
 	</div>
 </div>
 <div class="panel panel-default">

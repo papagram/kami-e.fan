@@ -12,7 +12,7 @@
 				<?php require_once (doc_root('/view/layout/left_nav.php')); ?>
 			</div>
 			<div class="col col-md-9">
-				<h1>こんにちは！<?php echo h($user['name']); ?>さん</h1>
+				<h2>こんにちは！<?php echo h($user['name']); ?>さん</h2>
 				<hr>
 				<div class="panel panel-default">
 					<div class="panel-heading">最近の出品リスト</div>
