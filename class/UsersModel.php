@@ -32,7 +32,7 @@ class UsersModel extends DbManager
 		$stmt->bindValue(':password', $password, PDO::PARAM_STR);
 		$stmt->execute();
 		$count = $stmt->rowCount();
-		if (! $count) {
+		if (!$count) {
 			return false;
 		}
 		
@@ -46,6 +46,9 @@ class UsersModel extends DbManager
 		$stmt->bindValue(':email', $email, PDO::PARAM_STR);
 		$stmt->execute();
 		$count = $stmt->fetchColumn();
+		if (!is_int($count)) {
+			$count = (int)$count;
+		}
 		
 		return ($count === 0) ? true : false;
 	}
