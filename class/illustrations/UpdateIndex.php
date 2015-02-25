@@ -30,7 +30,9 @@ class UpdateIndex
 		$rec = $this->model->findById($id);
 		
 		// ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
-		is_match_user_id($rec['user_id'], $user['id']);
+		if ($rec['user_id'] !== $user['id']) {
+			throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
+		}
 		
 		// ▼ 画像データを取得 パス、幅、高さを取得
 		// ▼ 第3引数にモード指定で表示サイズ変更 引数無しの場合オリジナルサイズ
