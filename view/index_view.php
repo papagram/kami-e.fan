@@ -20,23 +20,23 @@
 					<div class="panel-heading">New Arrival</div>
 					<div class="panel-body">
 						<ul class="list-inline">
-							<?php for ($i=0; $i<$count; $i++): ?>
+							<?php for ($i=0; $i<$list; $i++): ?>
 							<li class="li-padding">
 								<div class="thumb-box">
 									<div class="thumb">
-										<a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>">
-											<img src="<?php echo h($images[$i]); ?>">
+										<a href="<?php echo h(root_url("/illustrations/display/display.php?id={$image[$i]->getId()}")); ?>">
+											<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image[$i]->getFilenameThumb()}&mime={$image[$i]->getMime()}&user_id={$image[$i]->getUserId()}")); ?>">
 										</a>
 									</div>
 									<div class="thumb-name">
-										<p><?php echo h($rec[$i]['name']); ?></p>
+										<p><?php echo h($image[$i]->getName()); ?></p>
 									</div>
 								</div>
 							</li>
 							<?php endfor; ?>
 						</ul>
 						
-						<?php if (10 < $count): ?>
+						<?php if ($count === $limit): ?>
 						<div class="pull-right">
 							<a href="<?php echo h(root_url('/illustrations/display/new_arrival.php')); ?>">もっと見る</a>
 						</div>

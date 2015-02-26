@@ -16,7 +16,7 @@
 					<fieldset>
 						<legend>編集</legend>
 						<div class="thumb">
-							<img src="<?php echo h($image[0]); ?>" width="<?php echo h($image[1]); ?>" height="<?php echo h($image[2]); ?>">
+							<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image->getFilenameThumb()}&mime={$image->getMime()}&user_id={$image->getUserId()}")); ?>">
 						</div>
 						<div class="form-group">
 							<label for="title">タイトル</label>
