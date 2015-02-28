@@ -62,6 +62,7 @@ class LoginAction
 			unset($user['password']);
 			unset($user['regist_flg']);
 			unset($user['activation_key']);
+			unset($_SESSION['login']);
 			$_SESSION['user'] = $user;
 			redirect('/users/user_index.php');
 		} else {
