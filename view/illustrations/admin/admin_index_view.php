@@ -21,18 +21,18 @@
 					<div class="list-group-item">
 						<div class="admin-list-box">
 							<div class="admin-list-image thumb">
-								<a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>">
-									<img src="<?php echo h($images[$i])?>">
+								<a href="<?php echo h(root_url("/illustrations/display/display.php?id={$image[$i]->getId()}")); ?>">
+									<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image[$i]->getFilenameThumb()}&mime={$image[$i]->getMime()}&user_id={$image[$i]->getUserId()}")); ?>">
 								</a>
 							</div>
 							<div class="admin-list-text">
 								<ul class="list-unstyled">
-									<li>ID: <?php echo h($rec[$i]['id']); ?></li>
-									<li>タイトル: <a href="<?php echo h(root_url('/illustrations/display/display.php?id=' . $rec[$i]['id'])); ?>"><?php echo h($rec[$i]['title']); ?></a></li>
-									<li>価格: <?php echo h($rec[$i]['price']); ?>円</li>
-									<li>登録日: <?php echo h($rec[$i]['created_at']); ?></li>
-									<li><a href="<?php echo h(root_url('/illustrations/admin/update_index.php?id=' . $rec[$i]['id'])); ?>">【編集】</a></li>
-									<li><a href="<?php echo h(root_url('/illustrations/admin/delete_action.php?id=' . $rec[$i]['id'])); ?>">【削除】</a></li>
+									<li>ID: <?php echo h($image[$i]->getId()); ?></li>
+									<li>タイトル: <a href="<?php echo h(root_url("/illustrations/display/display.php?id={$image[$i]->getId()}")); ?>"><?php echo h($image[$i]->getTitle()); ?></a></li>
+									<li>価格: <?php echo h($image[$i]->getPrice()); ?>円</li>
+									<li>登録日: <?php echo h($image[$i]->getCreatedAt()); ?></li>
+									<li><a href="<?php echo h(root_url('/illustrations/admin/update_index.php?id=' . $image[$i]->getId())); ?>">【編集】</a></li>
+									<li><a href="<?php echo h(root_url('/illustrations/admin/delete_action.php?id=' . $image[$i]->getId())); ?>">【削除】</a></li>
 								</ul>
 							</div>
 						</div>

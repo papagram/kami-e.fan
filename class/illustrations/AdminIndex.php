@@ -2,6 +2,7 @@
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/IllustrationsModel.php'));
+require_once(doc_root('/class/Image.php'));
 
 class AdminIndex
 {
@@ -24,8 +25,15 @@ class AdminIndex
 		$rec = $this->model->findByUserId($user['id']);
 		$count = count($rec); // 取得件数
 		
+		// ▼ 表示件数分のimageオブジェクトを生成
+		$i = 0;
+		while ($i < $count) {
+			$image[] = new Image($rec[$i]);
+			$i++;
+		}
+		
 		// ▼ 画像ファイルのパスを配列で返す
-		$images = images($rec, $count);
+		// $images = images($rec, $count);
 		
 		// ▼ 現日時を取得
 		$date = new DateTime();

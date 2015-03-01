@@ -8,9 +8,6 @@ class ImageView
 {
 	public function execute()
 	{
-		// ▼ セッションからユーザー情報を取得
-		$user = set_user();
-		
 		// ▼ URLパラメータをチェック
 		if (!isset($_GET['filename']) || !isset($_GET['mime']) || !isset($_GET['user_id'])) {
 			throw new IllegalAccessException('申し訳ありません。お探しのイラストが見つかりません。');
