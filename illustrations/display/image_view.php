@@ -2,7 +2,6 @@
 
 // ▼ セッションを開始
 session_start();
-session_regenerate_id(true);
 
 // ▼ 共通設定ファイルを読み込む
 require_once($_SERVER['DOCUMENT_ROOT'] . '/functions/functions.php'); // 明示的に$_SERVER['DOCUMENT_ROOT']で読む
