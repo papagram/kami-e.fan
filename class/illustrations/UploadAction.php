@@ -98,7 +98,7 @@ class UploadAction
 			
 			
 			// ▼ 画像を保存
-			$dir = doc_root("/images/{$user['id']}/illustrations/original/");
+			$dir = doc_root("/../images/{$user['id']}/illustrations/original/");
 			$filename = sha1(microtime() . mt_rand());
 			$original = $filename . '.' . $ext;
 			if (! is_dir($dir)) {
@@ -118,7 +118,7 @@ class UploadAction
 			
 			// ▼ 幅か高さのどちらかが最大値を超えていたらサムネイル作成
 			if ($w > $max_w || $h > $max_h) {
-				$dir_thumb = doc_root("/images/{$user['id']}/illustrations/thumb/");
+				$dir_thumb = doc_root("/../images/{$user['id']}/illustrations/thumb/");
 				$thumb = $filename . '_s.' . $ext;
 				if (! is_dir($dir_thumb)) {
 					mkdir($dir_thumb, 0777, true);

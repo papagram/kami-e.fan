@@ -2,6 +2,7 @@
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/IllustrationsModel.php'));
+require_once(doc_root('/class/Image.php'));
 
 class UpdateIndex
 {
@@ -34,10 +35,13 @@ class UpdateIndex
 			throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
 		}
 		
-		// ▼ 画像データを取得 パス、幅、高さを取得
-		// ▼ 第3引数にモード指定で表示サイズ変更 引数無しの場合オリジナルサイズ
-		$image = image_thumb($rec);
-	
+		// ▼ imageオブジェクトを生成
+		$image = new Image($rec);
+		list($w, $h) = $image->getImageSize($image->getFilenameThumb());
+		$max_w = 450;
+		$max_h = 450;
+		list($new_w, $new_h) = $image->getNewImageSize($w, $h, $max_w, $max_h);
+		
 		// ▼ 変数初期化
 		$input_title = (isset($_SESSION['update_illust']['input_title'])) ? $_SESSION['update_illust']['input_title'] : $rec['title'];
 		$input_price = (isset($_SESSION['update_illust']['input_price'])) ? $_SESSION['update_illust']['input_price'] : $rec['price'];

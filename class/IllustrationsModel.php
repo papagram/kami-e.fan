@@ -72,10 +72,8 @@ class IllustrationsModel extends DbManager
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	public function findLimit ()
+	public function findLimit ($limit)
 	{
-		$limit = 10;
-		
 		$sql = 'SELECT * FROM illustrations ORDER BY id DESC limit :limit';
 		$sql = 'SELECT i.id,
 					i.title,
