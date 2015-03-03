@@ -10,7 +10,7 @@
 		<div class="row">
 			<div class="col col-md-5">
 				<div class="display">
-					<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image->getFilenameThumb()}&mime={$image->getMime()}&user_id={$image->getUserId()}")); ?>">
+					<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image->getFilename()}&mime={$image->getMime()}&user_id={$image->getUserId()}")); ?>" width="<?php echo h($new_w); ?>" height="<?php echo h($new_h); ?>">
 				</div>
 			</div>
 			<div class="col col-md-4">

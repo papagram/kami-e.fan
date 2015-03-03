@@ -30,6 +30,10 @@ class Index
 		$i = 0;
 		while ($i < $list) {
 			$image[] = new Image($rec[$i]);
+			list($w[], $h[]) = $image[$i]->getImageSize($image[$i]->getFilenameThumb());
+			$max_w = 160;
+			$max_h = 160;
+			list($new_w[], $new_h[]) = $image[$i]->getNewImageSize($w[$i], $h[$i], $max_w, $max_h);
 			$i++;
 		}
 

@@ -37,6 +37,10 @@ class UpdateIndex
 		
 		// ▼ imageオブジェクトを生成
 		$image = new Image($rec);
+		list($w, $h) = $image->getImageSize($image->getFilenameThumb());
+		$max_w = 450;
+		$max_h = 450;
+		list($new_w, $new_h) = $image->getNewImageSize($w, $h, $max_w, $max_h);
 		
 		// ▼ 変数初期化
 		$input_title = (isset($_SESSION['update_illust']['input_title'])) ? $_SESSION['update_illust']['input_title'] : $rec['title'];

@@ -16,10 +16,17 @@ class ImageView
 		$mime = $_GET['mime'];
 		$user_id = $_GET['user_id'];
 		
+		// ▼ 画像ファイルんパスを特定
 		if (mb_strpos($filename, '_s.') === false) {
 			$image =  doc_root("/../images/{$user_id}/illustrations/original/{$filename}");
 		} else {
 			$image =  doc_root("/../images/{$user_id}/illustrations/thumb/{$filename}");
+		}
+		
+		// ▼ 画像ファイルが存在しなければ・・・
+		if (!file_exists($image)) {
+			$image = doc_root('/../images/common/no_image.gif');
+			$mime = 'image/gif';
 		}
 		
 		header ('Content-type: ' . h($mime));

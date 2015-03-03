@@ -21,7 +21,7 @@
 							<?php for ($i=0; $i<$count; $i++): ?>
 							<li><div class="thumb">
 								<a href="<?php echo h(root_url("/illustrations/display/display.php?id={$image[$i]->getId()}")); ?>">
-									<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image[$i]->getFilenameThumb()}&mime={$image[$i]->getMime()}&user_id={$image[$i]->getUserId()}")); ?>">
+									<img src="<?php echo h(root_url("/illustrations/display/image_view.php?filename={$image[$i]->getFilenameThumb()}&mime={$image[$i]->getMime()}&user_id={$image[$i]->getUserId()}")); ?>" width="<?php echo h($new_w[$i]); ?>" height="<?php echo h($new_h[$i]); ?>">
 								</a></div>
 							</li>
 							<?php endfor; ?>

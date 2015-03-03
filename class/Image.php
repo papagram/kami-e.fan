@@ -80,4 +80,61 @@ class Image
 	{
 		return $this->email;
 	}
+	
+	public function getImageSize($filename)
+	{
+		// ▼ 画像ファイルんパスを特定
+		if (mb_strpos($filename, '_s.') === false) {
+			$image =  doc_root("/../images/{$this->user_id}/illustrations/original/{$this->filename}");
+		} else {
+			$image =  doc_root("/../images/{$this->user_id}/illustrations/thumb/{$this->filename_thumb}");
+		}
+		
+		// ▼ 画像ファイルが存在しなければ・・・
+		if (!file_exists($image)) {
+			$image = doc_root('/../images/common/no_image.gif');
+		}
+
+		return getimagesize($image);
+	}
+	
+	public function getNewImageSize($w, $h, $max_w, $max_h)
+	{
+		$new_w = $w;
+		$new_h = $h;
+		
+		// ▼ 原寸幅が最大幅より大きい　かつ　原寸高さよりも原寸幅が大きい
+		if ($w > $max_w && $w > $h)
+		{
+			$new_w = $max_w;
+			$new_h = round($h * $max_w / $w);
+		}
+		
+		// ▼ 原寸高さが最大高さより大きい　かつ　原寸幅よりも原寸高さが大きい
+		if ($h > $max_h && $h >= $w)
+		{
+			$new_h = $max_h;
+			$new_w = round($w * $max_h / $h);
+		}
+		
+		return array($new_w, $new_h);
+	}
+	
+	public function getImagePath($type)
+	{
+		if (!isset($type)) {
+			echo '引数エラー';
+			exit;
+		}
+		
+		if ($type === 'original') {
+			$path = doc_root("/../images/{$this->user_id}/illustrations/original/{$this->filename}");
+		}
+		
+		if ($type === 'thumb') {
+			$path = doc_root("/../images/{$this->user_id}/illustrations/thumb/{$this->filename_thumb}");
+		}
+		
+		return $path;
+	}
 }

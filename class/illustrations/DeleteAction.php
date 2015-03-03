@@ -2,6 +2,7 @@
 
 // ▼ classファイルを読み込む
 require_once(doc_root('/class/IllustrationsModel.php'));
+require_once(doc_root('/class/Image.php'));
 
 class DeleteAction
 {
@@ -29,8 +30,11 @@ class DeleteAction
 		// ▼ 削除対象のイラスト情報を取得
 		$rec = $this->model->findById($id);
 		
+		// ▼ imageオブジェクトを生成
+		$image = new Image($rec);
+		
 		// ▼ 絞り込んだuser_idとセッションのuser_idが一致しなければエラー
-		if ($rec['user_id'] !== $user['id']) {
+		if ($image->getUserId() !== (int)$user['id']) {
 			throw new IllegalUserException('エラーが発生しました。もう一度やり直して下さい。');
 		}
 		
@@ -42,10 +46,10 @@ class DeleteAction
 		}
 		
 		// ▼ 画像ファイルを削除 2ヶ所
-		$filename = doc_root("/images/{$user['id']}/illustrations/original/{$rec['filename']}"); // オリジナル画像 これは絶対ある
+		$filename = $image->getImagePath($type = 'original'); // オリジナル画像 これは絶対ある
 		$filename_thumb = ''; // 初期化
-		if (mb_strlen($rec['filename_thumb']) > 0) {
-			$filename_thumb = doc_root("/images/{$user['id']}/illustrations/thumb/{$rec['filename_thumb']}"); // サムネ画像 これはないかもしれないのでファイル名で判定する
+		if (mb_strlen($image->getFilenameThumb()) > 0) {
+			$filename_thumb = $image->getImagePath($type = 'thumb'); // サムネ画像 これはないかもしれないのでファイル名で判定する
 		}
 		
 		if (file_exists($filename)) {

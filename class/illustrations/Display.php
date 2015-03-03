@@ -29,6 +29,10 @@ class Display
 		
 		// ▼ imageオブジェクトを生成
 		$image = new Image($rec);
+		list($w, $h) = $image->getImageSize($image->getFilename());
+		$max_w = 450;
+		$max_h = 450;
+		list($new_w, $new_h) = $image->getNewImageSize($w, $h, $max_w, $max_h);
 		
 		// ▼ 現日時を取得
 		$date = new DateTime();
